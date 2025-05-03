@@ -3,7 +3,6 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export const getUsers = async () => {
-    
     try {
         const users = await prisma.user.findMany();
         return users;
