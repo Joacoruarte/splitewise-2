@@ -1,7 +1,7 @@
+import { BalanceSummaryCard } from '@/components/balance-summary-card';
 import { Navbar } from '@/components/navbar';
 import { QuickActionsCard } from '@/components/quick-actions-card';
 import { RecentActivityCard } from '@/components/recent-activity-card';
-import { BalanceSummaryCard } from '@/components/balance-summary-card';
 
 export const metadata = {
   title: 'SplitWise - Home',
@@ -23,4 +23,4 @@ export default function HomePage() {
       </main>
     </div>
   );
-} 
+}

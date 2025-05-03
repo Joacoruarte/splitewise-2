@@ -1,7 +1,9 @@
-import { Theme } from '@/lib/theme';
-import { ClerkProvider } from '@clerk/nextjs';
 import { ThemeProvider } from '@/providers/theme-provider';
+import { ClerkProvider } from '@clerk/nextjs';
+
 import React from 'react';
+
+import { Theme } from '@/lib/theme';
 
 interface ProvidersProps {
   children: React.ReactNode;

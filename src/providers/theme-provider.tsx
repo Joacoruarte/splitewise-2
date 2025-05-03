@@ -1,18 +1,22 @@
 'use client';
-import { setCookie } from '@/lib/cookies';
-import {
-  Theme,
-  ThemeContextType,
-  toggleTheme,
-} from '@/lib/theme';
+
 import { createContext, useContext, useEffect, useState } from 'react';
+
+import { setCookie } from '@/lib/cookies';
+import { Theme, ThemeContextType, toggleTheme } from '@/lib/theme';
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: 'light',
   toggleTheme: () => {},
 });
 
-export function ThemeProvider({ children, defaultTheme }: { children: React.ReactNode, defaultTheme: Theme }) {
+export function ThemeProvider({
+  children,
+  defaultTheme,
+}: {
+  children: React.ReactNode;
+  defaultTheme: Theme;
+}) {
   const [theme, setTheme] = useState<Theme>(defaultTheme);
 
   useEffect(() => {
@@ -21,9 +25,7 @@ export function ThemeProvider({ children, defaultTheme }: { children: React.Reac
   }, [theme]);
 
   return (
-    <ThemeContext.Provider
-      value={{ theme, toggleTheme: () => setTheme(toggleTheme(theme)) }}
-    >
+    <ThemeContext.Provider value={{ theme, toggleTheme: () => setTheme(toggleTheme(theme)) }}>
       {children}
     </ThemeContext.Provider>
   );

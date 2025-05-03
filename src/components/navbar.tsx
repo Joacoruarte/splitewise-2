@@ -1,7 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
+
+import Link from 'next/link';
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,19 +19,34 @@ export const Navbar = () => {
 
           {/* Desktop menu */}
           <div className="hidden sm:flex sm:items-center sm:space-x-8">
-            <Link href="/home" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+            <Link
+              href="/home"
+              className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+            >
               Home
             </Link>
-            <Link href="/expenses" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+            <Link
+              href="/expenses"
+              className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+            >
               Expenses
             </Link>
-            <Link href="/groups" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+            <Link
+              href="/groups"
+              className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+            >
               Groups
             </Link>
-            <Link href="/profile" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+            <Link
+              href="/profile"
+              className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+            >
               Profile
             </Link>
-            <Link href="/auth/login" className="text-indigo-600 hover:text-indigo-900 px-3 py-2 rounded-md text-sm font-medium">
+            <Link
+              href="/auth/login"
+              className="text-indigo-600 hover:text-indigo-900 px-3 py-2 rounded-md text-sm font-medium"
+            >
               Login
             </Link>
           </div>
@@ -43,12 +59,34 @@ export const Navbar = () => {
             >
               <span className="sr-only">Open main menu</span>
               {!isMenuOpen ? (
-                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <svg
+                  className="block h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 </svg>
               ) : (
-                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="block h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               )}
             </button>
@@ -60,19 +98,34 @@ export const Navbar = () => {
       {isMenuOpen && (
         <div className="sm:hidden">
           <div className="pt-2 pb-3 space-y-1">
-            <Link href="/home" className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50">
+            <Link
+              href="/home"
+              className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+            >
               Home
             </Link>
-            <Link href="/expenses" className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50">
+            <Link
+              href="/expenses"
+              className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+            >
               Expenses
             </Link>
-            <Link href="/groups" className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50">
+            <Link
+              href="/groups"
+              className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+            >
               Groups
             </Link>
-            <Link href="/profile" className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50">
+            <Link
+              href="/profile"
+              className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+            >
               Profile
             </Link>
-            <Link href="/auth/login" className="block px-3 py-2 text-base font-medium text-indigo-600 hover:text-indigo-900 hover:bg-gray-50">
+            <Link
+              href="/auth/login"
+              className="block px-3 py-2 text-base font-medium text-indigo-600 hover:text-indigo-900 hover:bg-gray-50"
+            >
               Login
             </Link>
           </div>

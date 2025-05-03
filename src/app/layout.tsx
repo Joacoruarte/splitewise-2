@@ -1,14 +1,9 @@
-import { Theme } from '@/lib/theme';
-import {
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from '@clerk/nextjs';
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import { cookies } from 'next/headers';
+
+import { Theme } from '@/lib/theme';
+
 import './globals.css';
 import Providers from './providers';
 
@@ -32,20 +27,9 @@ export default async function RootLayout({
   const defaultTheme = (cookiesStore.get('theme')?.value || 'light') as Theme;
 
   return (
-    <html lang='en' className={defaultTheme}>
+    <html lang="en" className={defaultTheme}>
       <body className={`${poppins.variable} antialiased`}>
-        <Providers defaultTheme={defaultTheme}>
-          <header className='flex justify-end items-center p-4 gap-4 h-16'>
-            <SignedOut>
-              <SignInButton />
-              <SignUpButton />
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </header>
-          {children}
-        </Providers>
+        <Providers defaultTheme={defaultTheme}>{children}</Providers>
       </body>
     </html>
   );

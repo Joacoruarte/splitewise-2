@@ -3,9 +3,7 @@ export const getCookie = (cookieName: string, customCookies?: string) => {
     return '';
   }
   const nombre = cookieName + '=';
-  const cookies = customCookies
-    ? customCookies.split(';')
-    : document.cookie.split(';');
+  const cookies = customCookies ? customCookies.split(';') : document.cookie.split(';');
 
   for (let i = 0; i < cookies.length; i++) {
     const cookie = cookies[i].trim();
@@ -70,12 +68,7 @@ export const updateCookie = (cookieName: string, cookieValue: string) => {
 
       // Crea la nueva cookie con el nuevo valor y la fecha de vencimiento original
       const cookieActualizada =
-        cookieName +
-        '=' +
-        cookieValue +
-        '; expires=' +
-        fechaVencimiento +
-        '; path=/';
+        cookieName + '=' + cookieValue + '; expires=' + fechaVencimiento + '; path=/';
       document.cookie = cookieActualizada;
       break;
     }
