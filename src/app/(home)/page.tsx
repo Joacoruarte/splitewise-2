@@ -2,9 +2,7 @@ import { Navbar } from '@/components/navbar';
 import { QuickActionsCard } from '@/components/quick-actions-card';
 import { RecentActivityCard } from '@/components/recent-activity-card';
 import { BalanceSummaryCard } from '@/components/balance-summary-card';
-import { prisma } from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
-import { Prisma } from '@prisma/client';
+import { createRandomUser, getUsers } from '@/actions/user';
 
 export const metadata = {
   title: 'SplitWise - Home',
@@ -12,44 +10,11 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  const users = await prisma.user.findMany();
-
-  async function create(formData: FormData) {
-    'use server';
-    
-    const uuid = crypto.randomUUID();
-    const username = formData.get('username');
-   
-    try {
-      await prisma.user.create({
-        data: {
-          name: username as string,
-          email: `test-${uuid}@test.com`,
-          external_id: uuid,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-      
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        console.log('error.cause', error.cause);
-        console.log('error.message', error.message);
-        console.log('error.name', error.name);
-        console.log('error.meta', error.meta);
-        console.log('error.code', error.code);
-        console.log('error.stack', error.stack);
-        
-      }
-    }
-
-    revalidatePath('/');
-  }
-
-
+  const users = await getUsers();
   return (
     <div className='min-h-screen bg-gray-50'>
       <Navbar />
-      <form action={create}>
+      <form action={createRandomUser}>
         <input type="text" placeholder="write a username" name="username" />
         <button type="submit">Submit</button>
       </form>
