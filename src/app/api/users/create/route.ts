@@ -21,15 +21,21 @@ export async function POST(req: Request) {
       },
     });
 
+    console.log('CLIENT ALREADY EXISTS', client);
+
     if (client) {
       return NextResponse.json(body, { status: 200 });
     }
+
+    console.log('USER CREATION', body.data.profile_image_url);
+    console.log('USER CREATION', body.data.image_url);
 
     await prisma.user.create({
       data: {
         external_id: body.data.id,
         name: body.data.username || `${body.data.first_name} ${body.data.last_name}`,
         email: body.data.email_addresses[0].email_address,
+        picture: body.data.profile_image_url || body.data.image_url,
       },
     });
 

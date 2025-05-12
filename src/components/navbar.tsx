@@ -1,11 +1,17 @@
 'use client';
 
+import { SignedIn, UserButton, useUser } from '@clerk/nextjs';
+
 import { useState } from 'react';
 
 import Link from 'next/link';
 
+import { cn } from '@/lib/utils';
+
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isSignedIn, isLoaded, user } = useUser();
+  const isAdmin = user?.emailAddresses[0].emailAddress === 'ruartejoaquin@gmail.com';
 
   return (
     <nav className="bg-white shadow-lg">
@@ -13,42 +19,71 @@ export const Navbar = () => {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0 flex items-center">
-              <span className="text-2xl font-bold text-gray-800">SplitWise</span>
+              <span className="text-2xl font-bold text-gray-800">Ducky App</span>
             </Link>
           </div>
 
           {/* Desktop menu */}
           <div className="hidden sm:flex sm:items-center sm:space-x-8">
-            <Link
-              href="/home"
-              className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Home
-            </Link>
-            <Link
-              href="/expenses"
-              className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Expenses
-            </Link>
-            <Link
-              href="/groups"
-              className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Groups
-            </Link>
-            <Link
-              href="/profile"
-              className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Profile
-            </Link>
-            <Link
-              href="/auth/login"
-              className="text-indigo-600 hover:text-indigo-900 px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Login
-            </Link>
+            {!isLoaded ? (
+              Array.from({ length: 5 }).map((_, index, array) => (
+                <div
+                  key={index}
+                  className="text-gray-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
+                >
+                  <div
+                    className={cn('h-3 w-10 bg-gray-400 rounded-full animate-pulse', {
+                      'h-6 w-6': index === array.length - 1,
+                    })}
+                  ></div>
+                </div>
+              ))
+            ) : (
+              <>
+                <Link
+                  href="/home"
+                  className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Home
+                </Link>
+                <Link
+                  href="/expenses"
+                  className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Expenses
+                </Link>
+                <Link
+                  href="/groups"
+                  className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Groups
+                </Link>
+                {isAdmin && (
+                  <Link
+                    href="/dashboard"
+                    className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Admin
+                  </Link>
+                )}
+                {!isLoaded ? (
+                  <div className="text-gray-600 px-3 py-2 rounded-md text-sm font-medium flex items-center">
+                    <div className="h-6 w-6 bg-gray-400 rounded-full animate-pulse"></div>
+                  </div>
+                ) : !isSignedIn ? (
+                  <Link
+                    href="/auth/login"
+                    className="text-indigo-600 hover:text-indigo-900 px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Login
+                  </Link>
+                ) : (
+                  <SignedIn>
+                    <UserButton />
+                  </SignedIn>
+                )}
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
