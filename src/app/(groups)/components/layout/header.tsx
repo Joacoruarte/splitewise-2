@@ -1,17 +1,18 @@
 'use client';
 
+import { User } from '@prisma/client';
 import { PlusCircle } from 'lucide-react';
 
 import { useState } from 'react';
 
 import Link from 'next/link';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { ProfilePicture } from '@/components/ui/profile-picture';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 
-export function Header() {
+export function Header({ user }: { user: User }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -36,10 +37,7 @@ export function Header() {
           </div>
         </SheetContent>
       </Sheet>
-      <Avatar>
-        <AvatarImage src="/placeholder.svg?height=32&width=32" />
-        <AvatarFallback>JP</AvatarFallback>
-      </Avatar>
+      <ProfilePicture user={user} align="start" />
     </header>
   );
 }

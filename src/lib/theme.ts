@@ -1,28 +1,33 @@
 import { getCookie, setCookie } from './cookies';
 
-export type Theme = 'light' | 'dark';
+export type Theme = 'light' | 'dark' | 'system';
 
 export interface ThemeContextType {
   theme: Theme;
-  toggleTheme: () => void;
+  setTheme: (theme: Theme) => void;
 }
 
 export function getInitialTheme(): Theme {
   if (typeof window !== 'undefined') {
-    return (getCookie('theme') as Theme) || 'light';
+    return (getCookie('theme') as Theme) || 'system';
   }
-  return 'light'; // Default value on the server
+  return 'system';
 }
 
-export function toggleTheme(currentTheme: string): Theme {
+export function getSystemTheme(): 'light' | 'dark' {
+  if (typeof window === 'undefined') return 'light';
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+export function getEffectiveTheme(theme: Theme): 'light' | 'dark' {
+  if (theme === 'system') {
+    return getSystemTheme();
+  }
+  return theme;
+}
+
+export function toggleTheme(currentTheme: Theme): Theme {
   const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-
-  // update the DOM
-  document.documentElement.classList.remove(currentTheme);
-  document.documentElement.classList.add(newTheme);
-
-  // update the cookie
   setCookie('theme', newTheme);
-
   return newTheme;
 }

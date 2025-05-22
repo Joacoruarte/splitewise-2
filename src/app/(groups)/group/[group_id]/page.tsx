@@ -1,5 +1,5 @@
 import { getUserByExternalId } from '@/actions/users';
-import { HomeClient } from '@/app/(home)/page.client';
+import { HomeClient } from '@/app/(groups)/group/[group_id]/page.client';
 import { auth } from '@clerk/nextjs/server';
 
 export const metadata = {

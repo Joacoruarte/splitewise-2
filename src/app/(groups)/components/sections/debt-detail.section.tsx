@@ -1,3 +1,5 @@
+'use client';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 
 import { useState } from 'react';

@@ -1,5 +1,6 @@
+'use client';
+
 import { Progress } from '@radix-ui/react-progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@radix-ui/react-tabs';
 import { Car, Coffee, Plane, Plus, ShoppingBag, Utensils } from 'lucide-react';
 
 import { useState } from 'react';
@@ -7,6 +8,7 @@ import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import { AddExpenseDialog } from '../dialog/add-expense-dialog';
 
@@ -81,8 +83,12 @@ export function ExpenseHistorySection() {
 
       <Tabs defaultValue="recent">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="recent">Recientes</TabsTrigger>
-          <TabsTrigger value="categories">Por Categorías</TabsTrigger>
+          <TabsTrigger className="cursor-pointer" value="recent">
+            Recientes
+          </TabsTrigger>
+          <TabsTrigger className="cursor-pointer" value="categories">
+            Por Categorías
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="recent" className="space-y-4 pt-4">
           {recentExpenses.map(expense => (

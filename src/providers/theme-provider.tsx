@@ -3,11 +3,11 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
 import { setCookie } from '@/lib/cookies';
-import { Theme, ThemeContextType, toggleTheme } from '@/lib/theme';
+import { Theme, ThemeContextType, getEffectiveTheme, getSystemTheme } from '@/lib/theme';
 
 const ThemeContext = createContext<ThemeContextType>({
-  theme: 'light',
-  toggleTheme: () => {},
+  theme: 'system',
+  setTheme: () => {},
 });
 
 export function ThemeProvider({
@@ -18,17 +18,46 @@ export function ThemeProvider({
   defaultTheme: Theme;
 }) {
   const [theme, setTheme] = useState<Theme>(defaultTheme);
+  const [mounted, setMounted] = useState(false);
 
+  // Handle initial mount
   useEffect(() => {
-    document.documentElement.classList.add(theme);
-    setCookie('theme', theme);
-  }, [theme]);
+    setMounted(true);
+    const root = document.documentElement;
+    const effectiveTheme = getEffectiveTheme(theme);
+    root.classList.remove('light', 'dark');
+    root.classList.add(effectiveTheme);
+  }, []);
 
-  return (
-    <ThemeContext.Provider value={{ theme, toggleTheme: () => setTheme(toggleTheme(theme)) }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  // Handle theme changes
+  useEffect(() => {
+    if (!mounted) return;
+
+    const root = document.documentElement;
+    const effectiveTheme = getEffectiveTheme(theme);
+
+    root.classList.remove('light', 'dark');
+    root.classList.add(effectiveTheme);
+    setCookie('theme', theme);
+  }, [theme, mounted]);
+
+  // Listen for system theme changes
+  useEffect(() => {
+    if (!mounted || theme !== 'system') return;
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = () => {
+      const root = document.documentElement;
+      const effectiveTheme = getSystemTheme();
+      root.classList.remove('light', 'dark');
+      root.classList.add(effectiveTheme);
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, [theme, mounted]);
+
+  return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>;
 }
 
 export const useTheme = () => {

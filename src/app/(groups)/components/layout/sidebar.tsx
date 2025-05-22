@@ -1,9 +1,10 @@
+import { User } from '@prisma/client';
 import { Clock, CreditCard, Home, PieChart, Settings, Users } from 'lucide-react';
 
 import Link from 'next/link';
 
 import { ModeToggle } from '@/components/mode-toggle';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ProfilePicture } from '@/components/ui/profile-picture';
 import {
   Sidebar as SidebarComponent,
   SidebarContent,
@@ -14,11 +15,13 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 
-// import { User } from "@prisma/client"
-
-export function Sidebar() {
+export function Sidebar({ user, sidebarWidth }: { user: User; sidebarWidth: number }) {
   return (
-    <SidebarComponent variant="floating" className="border-r">
+    <SidebarComponent
+      variant="floating"
+      className="border-r flex-shrink-0 transition-width duration-150"
+      style={{ width: sidebarWidth }}
+    >
       <SidebarHeader className="flex flex-col items-start px-4 py-4">
         <div className="flex items-center">
           <CreditCard className="h-6 w-6 mr-2 text-primary" />
@@ -72,13 +75,12 @@ export function Sidebar() {
       <SidebarFooter className="border-t p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <Avatar className="h-8 w-8 mr-2">
-              <AvatarImage src="/placeholder.svg?height=32&width=32" />
-              <AvatarFallback>JD</AvatarFallback>
-            </Avatar>
+            <ProfilePicture user={user} className="h-8 w-8 mr-2" align="start" />
             <div>
-              <p className="text-sm font-medium">Juan Pérez</p>
-              <p className="text-xs text-muted-foreground">juan@ejemplo.com</p>
+              <p className="text-sm font-medium">{user.name}</p>
+              <p className="text-xs text-muted-foreground text-ellipsis overflow-x-hidden max-w-[150px]">
+                {user.email}
+              </p>
             </div>
           </div>
           <ModeToggle />

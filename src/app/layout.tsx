@@ -33,10 +33,35 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookiesStore = await cookies();
-  const defaultTheme = (cookiesStore.get('theme')?.value || 'light') as Theme;
+  const defaultTheme = (cookiesStore.get('theme')?.value || 'system') as Theme;
+  const effectiveTheme = defaultTheme === 'system' ? 'light' : defaultTheme;
 
   return (
-    <html lang="en" className={defaultTheme}>
+    <html lang="en" className={effectiveTheme} suppressHydrationWarning>
+      <head>
+        {/* Script para evitar el flash de tema incorrecto */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var themeValue = document.cookie.match(/theme=([^;]+)/)?.[1] || 'system';
+                  var root = document.documentElement;
+                  
+                  if (themeValue === 'system') {
+                    themeValue = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                  }
+                  
+                  root.classList.remove('light', 'dark');
+                  root.classList.add(themeValue);
+                } catch (e) {
+                  console.error('Theme initialization error:', e);
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className={`${poppins.variable} antialiased`}>
         <Toaster position="top-right" />
         <Providers defaultTheme={defaultTheme}>{children}</Providers>
