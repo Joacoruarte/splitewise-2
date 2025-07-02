@@ -35,6 +35,8 @@ model User {
   paymentsMade    Payment[]        @relation("payer")    // Pagos realizados
   notifications   Notification[]   // Notificaciones recibidas
   expenseShares   ExpenseShare[]   // Participaciones en gastos
+  invitationsReceived GroupInvitation[] @relation("InvitedUser")
+  invitationsSent     GroupInvitation[] @relation("InviterUser")
 }
 
 enum UserRole {
@@ -64,10 +66,24 @@ model Group {
   picture     String?       // URL o referencia a la imagen del grupo
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+  isPublic    Boolean       @default(false)
   
   // Relaciones
   members     GroupMember[] // Miembros del grupo
   expenses    Expense[]     // Gastos del grupo
+  tags        GroupCategories[]  @relation("GroupCategories")  // Etiquetas del grupo
+  invitations GroupInvitation[]
+}
+
+// Etiquetas de grupos
+model GroupCategories {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relaciones
+  groups      Group[]    @relation("GroupCategories")  // Grupos que tienen esta etiqueta
 }
 
 // Miembros de un grupo
@@ -84,6 +100,31 @@ model GroupMember {
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   
   @@unique([groupId, userId])
+}
+
+// Invitaciones a grupos
+model GroupInvitation {
+  id         String            @id @default(cuid())
+  groupId    String
+  invitedId  String
+  inviterId  String
+  status     InvitationStatus @default(PENDING)
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+
+  group      Group             @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  invited    User              @relation("InvitedUser", fields: [invitedId], references: [id], onDelete: Cascade)
+  inviter    User              @relation("InviterUser", fields: [inviterId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, invitedId])
+}
+
+// Estados de las invitaciones
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  CANCELED
 }
 
 // Gastos que pueden ser compartidos entre varios usuarios
@@ -198,6 +239,7 @@ model Notification {
   read        Boolean   @default(false)
   entityId    String?   // ID de la entidad relacionada (gasto, pago, etc.)
   createdAt   DateTime  @default(now())
+  metadata    Json?     // Metadatos adicionales de la notificación
   
   // Relaciones
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
