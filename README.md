@@ -33,7 +33,7 @@
 - [✅] Copy group link
 - [♻️] Invite people to group
   - [✅] Send group invite notification to people
-  - [✅] Add people to group when accepting invite
+  - [♻️] Add people to group when accepting invite
   - [ ] People can reject invite and the admin can re invite them
   - [ ] People can leave group
   - [ ] People can be removed from group by admin

@@ -1,7 +1,8 @@
 'use client';
 
+import { sendGroupInvitations } from '@/actions/groups';
 import { sendGroupInvitationNotifications } from '@/actions/notifications';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 interface UseSendGroupInvitationsProps {
@@ -21,6 +22,8 @@ export const useSendGroupInvitations = ({
   groupName,
   invitedByName,
 }: UseSendGroupInvitationsProps): UseSendGroupInvitationsReturn => {
+  const queryClient = useQueryClient();
+
   const { mutateAsync, isPending, error } = useMutation({
     mutationFn: async (userIds: string[]) => {
       if (!groupName || !invitedByName) {
@@ -30,15 +33,21 @@ export const useSendGroupInvitations = ({
         throw new Error(errorMessage);
       }
 
+      const groupInvitations = await sendGroupInvitations({ userIds, groupId });
+
       return await sendGroupInvitationNotifications({
         userIds,
         groupId,
         groupName,
         invitedByName,
+        groupInvitations,
       });
     },
     onSuccess: () => {
       toast.success('Invitaciones enviadas correctamente');
+
+      queryClient.invalidateQueries({ queryKey: ['invitedUsersByGroup'] });
+      queryClient.invalidateQueries({ queryKey: ['searchNotGroupMemberUsers'] });
     },
     onError: error => {
       console.error('Error al enviar invitaciones:', error.message);

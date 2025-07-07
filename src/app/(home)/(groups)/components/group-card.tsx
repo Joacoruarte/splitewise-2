@@ -1,5 +1,5 @@
-import { useGetGroupInvite } from '@/hooks/notifications/use-get-group-invite';
-import { useGroupInviteActions } from '@/hooks/notifications/use-group-invite-actions';
+import { useGetGroupInvite } from '@/hooks/use-get-group-invite';
+import { useGroupInviteActions } from '@/hooks/use-group-invite-actions';
 import { GroupWithRelations } from '@/models/group';
 import { Calendar, Check, X } from 'lucide-react';
 
@@ -23,7 +23,7 @@ export function GroupCard({ group }: { group: GroupWithRelations }) {
     groupId: group.id,
     enabled: !group.isCurrentUserMember, // Solo verificar si no es miembro
   });
-  const { acceptInvitation, declineInvitation, isAccepting, isDeclining } = useGroupInviteActions();
+  const { acceptInvitation, declineInvitation, isUpdating } = useGroupInviteActions();
 
   const handleAccept = async () => {
     if (invite) {
@@ -109,7 +109,7 @@ export function GroupCard({ group }: { group: GroupWithRelations }) {
                       <Button
                         size="sm"
                         onClick={handleAccept}
-                        disabled={isAccepting || isDeclining}
+                        disabled={isUpdating}
                         className="cursor-pointer"
                       >
                         <Check className="h-3 w-3 mr-1" />
@@ -119,7 +119,7 @@ export function GroupCard({ group }: { group: GroupWithRelations }) {
                         size="sm"
                         variant="outline"
                         onClick={handleDecline}
-                        disabled={isAccepting || isDeclining}
+                        disabled={isUpdating}
                         className="cursor-pointer"
                       >
                         <X className="h-3 w-3 mr-1" />

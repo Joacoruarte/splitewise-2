@@ -1,26 +1,18 @@
 'use client';
 
-import { getGroupInvite } from '@/actions/notifications';
+import { getGroupInvite } from '@/actions/groups';
 import { useSession } from '@/providers/session-provider';
+import { GroupInvitation, InvitationStatus } from '@prisma/client';
 import { useQuery } from '@tanstack/react-query';
-
-interface GroupInvite {
-  id: string;
-  title: string;
-  message: string;
-  entityId: string | null;
-  read: boolean;
-  createdAt: Date;
-  userId: string;
-}
 
 interface UseGetGroupInviteProps {
   groupId: string;
   enabled?: boolean;
+  status?: InvitationStatus;
 }
 
 interface UseGetGroupInviteReturn {
-  data: GroupInvite | null;
+  data: GroupInvitation | null;
   isLoading: boolean;
   error: Error | null;
   refetch: () => void;
@@ -30,6 +22,7 @@ interface UseGetGroupInviteReturn {
 export const useGetGroupInvite = ({
   groupId,
   enabled = true,
+  status = 'PENDING',
 }: UseGetGroupInviteProps): UseGetGroupInviteReturn => {
   const { user } = useSession();
 
@@ -39,12 +32,12 @@ export const useGetGroupInvite = ({
     error,
     refetch,
   } = useQuery({
-    queryKey: ['groupInvite', groupId, user?.id],
+    queryKey: ['groupInvite', groupId, user?.id, status],
     queryFn: async () => {
       if (!user?.id || !groupId) {
         return null;
       }
-      return await getGroupInvite(groupId);
+      return await getGroupInvite(groupId, status);
     },
     enabled: enabled && !!user?.id && !!groupId,
     staleTime: 30 * 1000, // 30 segundos

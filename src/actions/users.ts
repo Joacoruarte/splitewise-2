@@ -148,6 +148,17 @@ export async function getUserByExternalId(externalId: string | null): Promise<Us
   }
 }
 
+export async function getCurrentUser() {
+  const _currentUser = await currentUser();
+
+  if (!_currentUser) {
+    return null;
+  }
+
+  const user = await getUserByExternalId(_currentUser.id);
+  return user;
+}
+
 export async function createRandomUser(formData: FormData, path: string = '/') {
   try {
     const uuid = crypto.randomUUID();

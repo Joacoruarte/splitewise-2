@@ -1,7 +1,7 @@
 'use client';
 
 import { useGetNotifications } from '@/hooks/notifications/use-get-notifications';
-import { useGroupInviteActions } from '@/hooks/notifications/use-group-invite-actions';
+import { useGroupInviteActions } from '@/hooks/use-group-invite-actions';
 import { Bell, Loader2 } from 'lucide-react';
 
 import {

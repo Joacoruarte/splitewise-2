@@ -32,69 +32,6 @@ import { capitalize, copyToClipboard } from '@/lib/utils';
 import useGetGroupById from '../../hooks/useGetGroupById';
 import { InviteMembersDialog } from '../dialog/invite-members.dialog';
 
-const groupData = {
-  id: '1',
-  name: 'Viaje a Barcelona',
-  description:
-    'Grupo para gestionar los gastos del viaje a Barcelona en junio. Incluye alojamiento, comidas, transporte y actividades turísticas.',
-  image: '/group-placeholder.webp',
-  category: 'Viajes',
-  tags: ['Viaje', 'Vacaciones', 'España', 'Barcelona'],
-  createdAt: '2024-01-15',
-  isPublic: true,
-  totalExpenses: 1247.85,
-  totalMembers: 5,
-  recentActivity: 'Hace 2 horas',
-  members: [
-    {
-      id: 1,
-      name: 'Juan Pérez',
-      email: 'juan@ejemplo.com',
-      avatar: '/group-placeholder.webp',
-      initials: 'JP',
-      role: 'admin',
-      balance: 45.3,
-      isCurrentUser: true,
-    },
-    {
-      id: 2,
-      name: 'Ana García',
-      email: 'ana@ejemplo.com',
-      avatar: '/group-placeholder.webp',
-      initials: 'AG',
-      role: 'member',
-      balance: -23.5,
-    },
-    {
-      id: 3,
-      name: 'Carlos López',
-      email: 'carlos@ejemplo.com',
-      avatar: '/group-placeholder.webp',
-      initials: 'CL',
-      role: 'member',
-      balance: 12.75,
-    },
-    {
-      id: 4,
-      name: 'María Rodríguez',
-      email: 'maria@ejemplo.com',
-      avatar: '/group-placeholder.webp',
-      initials: 'MR',
-      role: 'member',
-      balance: -18.9,
-    },
-    {
-      id: 5,
-      name: 'Pedro Sánchez',
-      email: 'pedro@ejemplo.com',
-      avatar: '/group-placeholder.webp',
-      initials: 'PS',
-      role: 'member',
-      balance: -15.65,
-    },
-  ],
-};
-
 export default function GroupInfoSection({ groupId }: { groupId: string }) {
   const [showInviteMembersDialog, setShowInviteMembersDialog] = useState(false);
   const { user } = useSession();
@@ -126,8 +63,8 @@ export default function GroupInfoSection({ groupId }: { groupId: string }) {
           <div className="absolute -bottom-12 left-6">
             <div className="h-24 w-24 rounded-lg border-4 border-background bg-muted overflow-hidden">
               <Image
-                src={groupData.image || '/placeholder.svg'}
-                alt={groupData.name}
+                src={'/group-placeholder.webp'}
+                alt={group?.name}
                 className="h-full w-full object-cover"
                 width={96}
                 height={96}

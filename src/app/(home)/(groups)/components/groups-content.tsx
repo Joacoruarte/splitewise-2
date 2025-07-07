@@ -25,7 +25,7 @@ export function GroupsContent() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-7xl mx-auto">
       <GroupsControlPanel
         setSearchQuery={setSearchQuery}
         selectedCategory={selectedCategory}

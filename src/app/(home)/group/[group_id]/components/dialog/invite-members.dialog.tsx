@@ -1,9 +1,10 @@
 'use client';
 
+import { useDeleteInvite } from '@/hooks/use-delete-invite';
 import { useSearchUsers } from '@/hooks/use-search-users';
 import { useSendGroupInvitations } from '@/hooks/use-send-group-invitations';
 import { useSession } from '@/providers/session-provider';
-import { Loader2, Search } from 'lucide-react';
+import { Loader2, Search, Trash } from 'lucide-react';
 
 import type React from 'react';
 import { useState } from 'react';
@@ -39,6 +40,9 @@ export function InviteMembersDialog({ onClose }: InviteMembersDialogProps) {
     groupName: group?.name,
     invitedByName: user?.name,
   });
+  const { deleteInvitation, isPending: isDeleting } = useDeleteInvite({
+    groupId: group_id as string,
+  });
   const [selectedFriends, setSelectedFriends] = useState<string[]>([]);
 
   // Filtrar usuarios que ya están invitados
@@ -56,6 +60,10 @@ export function InviteMembersDialog({ onClose }: InviteMembersDialogProps) {
     e.preventDefault();
     await sendInvitations(selectedFriends);
     onClose();
+  };
+
+  const handleDeleteInvitation = async (invitationId: string) => {
+    await deleteInvitation(invitationId);
   };
 
   // Bloquear el componente mientras carga los usuarios invitados
@@ -124,13 +132,30 @@ export function InviteMembersDialog({ onClose }: InviteMembersDialogProps) {
                       <p className="text-xs text-muted-foreground">{user.email}</p>
                     </div>
                   </div>
-                  <Badge variant="outline" className="text-xs">
-                    {user.status === 'pending'
-                      ? 'Pendiente'
-                      : user.status === 'accepted'
-                        ? 'Aceptado'
-                        : 'Rechazado'}
-                  </Badge>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="text-xs">
+                      {user.status === 'PENDING'
+                        ? 'Pendiente'
+                        : user.status === 'ACCEPTED'
+                          ? 'Aceptado'
+                          : 'Rechazado'}
+                    </Badge>
+                    {user.status === 'REJECTED' && (
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        className="cursor-pointer"
+                        onClick={() => handleDeleteInvitation(user.invitationId)}
+                        disabled={isDeleting}
+                      >
+                        {isDeleting ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <Trash className="w-4" />
+                        )}
+                      </Button>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
