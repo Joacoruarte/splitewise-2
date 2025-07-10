@@ -31,7 +31,12 @@
   - [✅] People can reject invite and the admin can re invite them
   - [✅] People can be removed from group by admin
   - [✅] People can leave group
-- [♻️] Upload group photo
+
+### 💡 Extras
+
+- [ ] Add group photo
+- [ ] Update group photo
+- [ ] Delete group photo
 
 ## 🧑 User Tasks
 
@@ -39,7 +44,7 @@
 
 ## 💰 Expense Tasks
 
-- [ ] Create expense
+- [♻️] Create expense
 - [ ] Edit expense
 - [ ] Delete expense
 - [ ] Add multiple payers to expense
