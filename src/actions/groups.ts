@@ -1,14 +1,12 @@
 'use server';
 
-import { UnauthenticatedError } from '@/models/errors/auth';
+import { UnauthenticatedError, UnauthorizedError } from '@/models/errors/auth';
 import { NotFoundError } from '@/models/errors/common';
 import { CreateGroupData, GetGroupsProps, GroupWithRelations } from '@/models/group';
 import { currentUser } from '@clerk/nextjs/server';
 import { GroupCategories, InvitationStatus, Prisma } from '@prisma/client';
-
 import { getLogger } from '@/lib/logger';
 import { prisma } from '@/lib/prisma';
-
 import { getCurrentUser } from './users';
 
 export const getGroups = async ({
@@ -89,36 +87,42 @@ export const getGroups = async ({
 };
 
 export const getGroupById = async (groupId: string): Promise<GroupWithRelations> => {
+  const _currentUser = await getCurrentUser();
+
+  if (!_currentUser) {
+    throw new UnauthenticatedError('User not found');
+  }
+
   try {
-    const group = await prisma.group.findUnique({
-      where: { id: groupId },
-      include: {
-        members: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                name: true,
-                email: true,
-                picture: true,
-              },
+    const [group, currentUserGroupMember] = await Promise.all([
+      await prisma.group.findUnique({
+        where: { id: groupId },
+        include: {
+          tags: true,
+          _count: {
+            select: {
+              members: true,
             },
           },
         },
-        tags: true,
-        _count: {
-          select: {
-            members: true,
-          },
+      }),
+      await prisma.groupMember.findFirst({
+        where: {
+          groupId,
+          userId: _currentUser.id,
         },
-      },
-    });
+      }),
+    ]);
 
     if (!group) {
       throw new NotFoundError('Group not found');
     }
 
-    return group;
+    return {
+      ...group,
+      isCurrentUserAdmin: !!currentUserGroupMember?.isAdmin,
+      isCurrentUserMember: !!currentUserGroupMember,
+    };
   } catch (error) {
     getLogger('getGroupById group actions layer').error(error);
     throw error;
@@ -163,10 +167,19 @@ export const sendGroupInvitations = async ({
 };
 
 export async function getInvitedUsersByGroup(groupId: string) {
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser) {
+    throw new UnauthenticatedError('User not found');
+  }
+
   try {
     const invitations = await prisma.groupInvitation.findMany({
       where: {
         groupId,
+        invitedId: {
+          not: currentUser.id,
+        },
       },
       include: {
         invited: {
@@ -334,7 +347,7 @@ export async function deleteGroupInvitation(invitationId: string) {
     });
 
     if (!isInviter && !isGroupAdmin) {
-      throw new Error('You are not authorized to delete this invitation');
+      throw new UnauthorizedError('You are not authorized to delete this invitation');
     }
 
     // Eliminar la invitación
@@ -450,3 +463,201 @@ export const createGroup = async (data: CreateGroupData): Promise<GroupWithRelat
     throw error;
   }
 };
+
+export const getGroupMembers = async (groupId: string) => {
+  try {
+    // Check if the group exists
+    const group = await prisma.group.findUnique({
+      where: { id: groupId },
+      select: { id: true },
+    });
+
+    if (!group) {
+      throw new NotFoundError('El grupo no existe');
+    }
+
+    const members = await prisma.groupMember.findMany({
+      where: { groupId },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            picture: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+    });
+
+    return members;
+  } catch (error) {
+    getLogger('getGroupMembers group actions layer').error(error);
+    throw error;
+  }
+};
+
+export async function removeGroupMember(groupId: string, memberId: string) {
+  try {
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser) {
+      throw new UnauthenticatedError('User not found');
+    }
+
+    // Verificar que el grupo existe
+    const group = await prisma.group.findUnique({
+      where: { id: groupId },
+      select: { id: true, name: true },
+    });
+
+    if (!group) {
+      throw new NotFoundError('El grupo no existe');
+    }
+
+    // Verificar que el miembro existe
+    const member = await prisma.groupMember.findUnique({
+      where: { id: memberId },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    if (!member) {
+      throw new NotFoundError('El miembro no existe');
+    }
+
+    // Verificar que el usuario actual es admin del grupo
+    const isGroupAdmin = await prisma.groupMember.findFirst({
+      where: {
+        groupId: groupId,
+        userId: currentUser.id,
+        isAdmin: true,
+      },
+    });
+
+    if (!isGroupAdmin) {
+      throw new UnauthorizedError('Solo los administradores pueden expulsar miembros');
+    }
+
+    // No permitir que un admin se expulse a sí mismo
+    if (member.userId === currentUser.id) {
+      throw new Error('Un administrador no puede expulsarse a sí mismo del grupo');
+    }
+
+    // Eliminar el miembro del grupo
+    await prisma.groupMember.delete({
+      where: { id: memberId },
+    });
+
+    // Eliminar la notificación asociada si existe
+    await prisma.notification.deleteMany({
+      where: {
+        userId: member.userId,
+        type: 'group_invitation',
+        entityId: groupId,
+      },
+    });
+
+    // Eliminar la invitación asociada si existe
+    await prisma.groupInvitation.deleteMany({
+      where: {
+        groupId,
+        invitedId: member.userId,
+      },
+    });
+
+    getLogger('removeGroupMember').info(
+      `Member ${memberId} removed from group ${groupId} by user ${currentUser.id}`
+    );
+
+    return {
+      success: true,
+      removedMember: member,
+      groupName: group.name,
+    };
+  } catch (error) {
+    getLogger('removeGroupMember').error(`Failed to remove group member: ${error}`);
+    throw error;
+  }
+}
+
+export async function leaveGroup(groupId: string) {
+  try {
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser) {
+      throw new UnauthenticatedError('User not found');
+    }
+
+    // Verificar que el grupo existe
+    const group = await prisma.group.findUnique({
+      where: { id: groupId },
+      select: { id: true, name: true },
+    });
+
+    if (!group) {
+      throw new NotFoundError('El grupo no existe');
+    }
+
+    // Verificar que el usuario es miembro del grupo
+    const member = await prisma.groupMember.findFirst({
+      where: {
+        groupId: groupId,
+        userId: currentUser.id,
+      },
+    });
+
+    if (!member) {
+      throw new NotFoundError('No eres miembro de este grupo');
+    }
+
+    // Verificar que el usuario no es admin (los admins no pueden abandonar el grupo)
+    if (member.isAdmin) {
+      throw new Error(
+        'Los administradores no pueden abandonar el grupo. Debes transferir la administración o eliminar el grupo.'
+      );
+    }
+
+    // Eliminar el miembro del grupo
+    await prisma.groupMember.delete({
+      where: { id: member.id },
+    });
+
+    // Eliminar la notificación asociada si existe
+    await prisma.notification.deleteMany({
+      where: {
+        userId: currentUser.id,
+        type: 'group_invitation',
+        entityId: groupId,
+      },
+    });
+
+    // Eliminar la invitación asociada si existe
+    await prisma.groupInvitation.deleteMany({
+      where: {
+        groupId,
+        invitedId: currentUser.id,
+      },
+    });
+
+    getLogger('leaveGroup').info(`User ${currentUser.id} left group ${groupId}`);
+
+    return {
+      success: true,
+      groupName: group.name,
+    };
+  } catch (error) {
+    getLogger('leaveGroup').error(`Failed to leave group: ${error}`);
+    throw error;
+  }
+}

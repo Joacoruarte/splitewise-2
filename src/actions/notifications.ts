@@ -1,19 +1,11 @@
 'use server';
 
 import { UnauthenticatedError } from '@/models/errors/auth';
+import { SendGroupInvitationNotificationProps } from '@/models/notifications';
 import { GroupInvitation } from '@prisma/client';
-
 import { getLogger } from '@/lib/logger';
 import { prisma } from '@/lib/prisma';
-
 import { getCurrentUser } from './users';
-
-interface SendGroupInvitationNotificationProps {
-  userId: string;
-  groupId: string;
-  groupName: string;
-  invitedByName: string;
-}
 
 export async function sendGroupInvitationNotification({
   userId,

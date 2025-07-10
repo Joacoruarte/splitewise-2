@@ -2,18 +2,8 @@
 
 import { getNotifications } from '@/actions/notifications';
 import { useSession } from '@/providers/session-provider';
+import { Notification } from '@prisma/client';
 import { useQuery } from '@tanstack/react-query';
-
-interface Notification {
-  id: string;
-  title: string;
-  message: string;
-  type: string;
-  entityId: string | null;
-  read: boolean;
-  createdAt: Date;
-  userId: string;
-}
 
 interface UseGetNotificationsProps {
   enabled?: boolean;

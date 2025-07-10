@@ -2,38 +2,29 @@
 
 import { useGetNotifications } from '@/hooks/notifications/use-get-notifications';
 import { useGroupInviteActions } from '@/hooks/use-group-invite-actions';
+import { Notification } from '@prisma/client';
 import { Bell, Loader2 } from 'lucide-react';
-
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
 import { Button } from '../ui/button';
 import { GroupInvitationCard } from './group-invitation-card';
 
 export default function UserNotifications() {
   const { data: notifications, isLoading, unreadCount } = useGetNotifications();
-  const { acceptInvitation, declineInvitation, isAccepting, isDeclining } = useGroupInviteActions();
+  const { acceptInvitation, declineInvitation, isUpdating } = useGroupInviteActions();
 
-  const handleAcceptInvitation = async (notificationId: string, groupId: string) => {
-    await acceptInvitation(notificationId, groupId);
+  const handleAcceptInvitation = async (groupInvitationId: string, groupId: string) => {
+    await acceptInvitation(groupInvitationId, groupId);
   };
 
-  const handleDeclineInvitation = async (notificationId: string, groupId: string) => {
-    await declineInvitation(notificationId, groupId);
+  const handleDeclineInvitation = async (groupInvitationId: string, groupId: string) => {
+    await declineInvitation(groupInvitationId, groupId);
   };
 
-  const renderNotification = (notification: {
-    id: string;
-    title: string;
-    message: string;
-    type: string;
-    entityId: string | null;
-    createdAt: Date;
-    read: boolean;
-  }) => {
+  const renderNotification = (notification: Notification) => {
     switch (notification.type) {
       case 'group_invitation':
         return (
@@ -42,7 +33,7 @@ export default function UserNotifications() {
             notification={notification}
             onAccept={handleAcceptInvitation}
             onDecline={handleDeclineInvitation}
-            isPending={isAccepting || isDeclining}
+            isPending={isUpdating}
           />
         );
       default:

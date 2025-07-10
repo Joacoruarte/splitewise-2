@@ -1,7 +1,6 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-
 import { setCookie } from '@/lib/cookies';
 import { Theme, ThemeContextType, getEffectiveTheme, getSystemTheme } from '@/lib/theme';
 
@@ -27,6 +26,7 @@ export function ThemeProvider({
     const effectiveTheme = getEffectiveTheme(theme);
     root.classList.remove('light', 'dark');
     root.classList.add(effectiveTheme);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Handle theme changes

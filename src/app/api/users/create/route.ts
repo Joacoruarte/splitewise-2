@@ -1,10 +1,10 @@
 import { CreateUserWebhookBody } from '@/models/create-user-webhook';
-
 import { NextResponse } from 'next/server';
-
+import { getLogger } from '@/lib/logger';
 import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
+const logger = getLogger('Create user clerk webhook');
 
 export async function POST(req: Request) {
   try {
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
       },
     });
 
-    console.log('CLIENT ALREADY EXISTS', client);
+    logger.info('CLIENT ALREADY EXISTS', client);
 
     if (client) {
       return NextResponse.json(body, { status: 200 });
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(body, { status: 201 });
   } catch (error) {
-    console.error('Error in user creation:', error);
+    logger.error('Error in user creation:', error);
 
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });

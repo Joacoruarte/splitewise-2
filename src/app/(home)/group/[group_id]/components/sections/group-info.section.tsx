@@ -1,21 +1,19 @@
 'use client';
 
-import { useSession } from '@/providers/session-provider';
+import { useLeaveGroup } from '@/app/(home)/group/[group_id]/hooks/use-leave-group';
 import {
   ArrowLeft,
   Calendar,
+  LogOut,
   MoreHorizontal,
   Settings,
   Share2,
   UserPlus,
   Users,
 } from 'lucide-react';
-
 import { useState } from 'react';
-
 import Image from 'next/image';
 import Link from 'next/link';
-
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -26,22 +24,31 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Modal } from '@/components/ui/modal';
-
 import { capitalize, copyToClipboard } from '@/lib/utils';
-
-import useGetGroupById from '../../hooks/useGetGroupById';
+import useGetGroupById from '../../hooks/use-get-group-by-id';
 import { InviteMembersDialog } from '../dialog/invite-members.dialog';
+import { MembersDialog } from '../dialog/members.dialog';
 
 export default function GroupInfoSection({ groupId }: { groupId: string }) {
   const [showInviteMembersDialog, setShowInviteMembersDialog] = useState(false);
-  const { user } = useSession();
+  const [showMembersDialog, setShowMembersDialog] = useState(false);
   const { data: group } = useGetGroupById({ groupId });
-  const userAdmin = group?.members.find(member => !!member.isAdmin);
-  const isAdmin = userAdmin?.userId === user?.id;
+  const { leaveGroup, isPending } = useLeaveGroup({ groupId });
+  const isAdmin = !!group?.isCurrentUserAdmin;
+  const isMember = !!group?.isCurrentUserMember;
 
   const handleCopyGroupLink = () => copyToClipboard(`${window.location.origin}/group/${groupId}`);
 
   const handleInviteMembers = () => setShowInviteMembersDialog(prev => !prev);
+
+  const handleShowMembers = () => setShowMembersDialog(prev => !prev);
+
+  const handleLeaveGroup = () => {
+    const confirmed = confirm('¿Estás seguro de que quieres abandonar este grupo?');
+    if (confirmed) {
+      leaveGroup();
+    }
+  };
 
   return (
     <>
@@ -93,24 +100,40 @@ export default function GroupInfoSection({ groupId }: { groupId: string }) {
                   <Calendar className="h-4 w-4" />
                   <span>Creado el {new Date(group.createdAt).toLocaleDateString('es-ES')}</span>
                 </div>
-                <div className="flex items-center gap-1">
+                <button
+                  className="flex items-center gap-1 cursor-pointer hover:underline underline-offset-4"
+                  onClick={handleShowMembers}
+                >
                   <Users className="h-4 w-4" />
                   <span>
                     {group._count?.members || 0} miembro
                     {(group._count?.members || 0) > 1 ? 's' : ''}
                   </span>
-                </div>
+                </button>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Button className="cursor-pointer" variant="outline" onClick={handleInviteMembers}>
-                <UserPlus className="h-4 w-4 mr-2" />
-                Invitar
-              </Button>
+              {isMember && (
+                <Button className="cursor-pointer" variant="outline" onClick={handleInviteMembers}>
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  Invitar
+                </Button>
+              )}
               <Button className="cursor-pointer" variant="outline" onClick={handleCopyGroupLink}>
                 <Share2 className="h-4 w-4 mr-2" />
                 Compartir
               </Button>
+              {isMember && !isAdmin && (
+                <Button
+                  className="cursor-pointer"
+                  variant="destructive"
+                  onClick={handleLeaveGroup}
+                  disabled={isPending}
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  {isPending ? 'Abandonando...' : 'Abandonar'}
+                </Button>
+              )}
               {isAdmin && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -133,6 +156,10 @@ export default function GroupInfoSection({ groupId }: { groupId: string }) {
 
       <Modal isOpen={showInviteMembersDialog} onClose={handleInviteMembers}>
         <InviteMembersDialog onClose={handleInviteMembers} />
+      </Modal>
+
+      <Modal isOpen={showMembersDialog} onClose={handleShowMembers}>
+        <MembersDialog />
       </Modal>
     </>
   );

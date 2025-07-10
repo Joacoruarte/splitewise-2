@@ -1,7 +1,7 @@
 'use client';
 
+import { Notification } from '@prisma/client';
 import { Check, Users, X } from 'lucide-react';
-
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -19,14 +19,7 @@ const formatTimeAgo = (date: Date): string => {
 };
 
 interface GroupInvitationCardProps {
-  notification: {
-    id: string;
-    title: string;
-    message: string;
-    entityId: string | null;
-    createdAt: Date;
-    read: boolean;
-  };
+  notification: Notification;
   onAccept?: (notificationId: string, groupId: string) => void;
   onDecline?: (notificationId: string, groupId: string) => void;
   isPending?: boolean;
@@ -39,14 +32,16 @@ export const GroupInvitationCard = ({
   isPending = false,
 }: GroupInvitationCardProps) => {
   const handleAccept = () => {
-    if (notification.entityId && onAccept) {
-      onAccept(notification.id, notification.entityId);
+    const metadata = notification.metadata as Record<string, string>;
+    if ('groupInvitationId' in metadata && onAccept && metadata.groupInvitationId) {
+      onAccept(metadata.groupInvitationId, metadata.groupId);
     }
   };
 
   const handleDecline = () => {
-    if (notification.entityId && onDecline) {
-      onDecline(notification.id, notification.entityId);
+    const metadata = notification.metadata as Record<string, string>;
+    if ('groupInvitationId' in metadata && onDecline && metadata.groupInvitationId) {
+      onDecline(metadata.groupInvitationId, metadata.groupId);
     }
   };
 

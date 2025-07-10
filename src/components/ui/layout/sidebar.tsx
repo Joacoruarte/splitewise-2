@@ -1,8 +1,6 @@
 import { User } from '@prisma/client';
 import { Clock, CreditCard, Home, PieChart, Settings, Users } from 'lucide-react';
-
 import Link from 'next/link';
-
 import { ModeToggle } from '@/components/mode-toggle';
 import { ProfilePicture } from '@/components/ui/profile-picture';
 import {
@@ -19,7 +17,7 @@ export function Sidebar({ user, sidebarWidth }: { user: User; sidebarWidth: numb
   return (
     <SidebarComponent
       variant="floating"
-      className="border-r flex-shrink-0 transition-width duration-150"
+      className="border-r flex-shrink-0 transition-width duration-150 bg-background"
       style={{ width: sidebarWidth }}
     >
       <SidebarHeader className="flex flex-col items-start px-4 py-4">

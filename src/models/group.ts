@@ -22,9 +22,10 @@ export interface GroupFieldsCount {
 
 // Tipo para la respuesta con datos relacionados
 export interface GroupWithRelations extends Group {
-  members: GroupMemberWithUser[];
+  members?: GroupMemberWithUser[];
   tags: GroupCategories[];
   isCurrentUserMember?: boolean;
+  isCurrentUserAdmin?: boolean;
   _count?: GroupFieldsCount;
 }
 

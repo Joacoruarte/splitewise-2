@@ -1,25 +1,21 @@
 'use client';
 
+import { useSendGroupInvitations } from '@/app/(home)/group/[group_id]/hooks/use-send-group-invitations';
 import { useDeleteInvite } from '@/hooks/use-delete-invite';
 import { useSearchUsers } from '@/hooks/use-search-users';
-import { useSendGroupInvitations } from '@/hooks/use-send-group-invitations';
 import { useSession } from '@/providers/session-provider';
 import { Loader2, Search, Trash } from 'lucide-react';
-
 import type React from 'react';
 import { useState } from 'react';
-
 import { useParams } from 'next/navigation';
-
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-
+import useGetGroupById from '../../hooks/use-get-group-by-id';
 import { useGetInvitedUsersByGroup } from '../../hooks/use-get-invited-users-by-group';
-import useGetGroupById from '../../hooks/useGetGroupById';
 
 interface InviteMembersDialogProps {
   onClose: () => void;

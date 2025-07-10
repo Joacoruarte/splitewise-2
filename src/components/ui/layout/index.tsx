@@ -2,11 +2,8 @@
 
 import { SessionProvider } from '@/providers/session-provider';
 import { User } from '@prisma/client';
-
 import { useState } from 'react';
-
 import { SIDEBAR_WIDTH, SidebarProvider, useSidebar } from '@/components/ui/sidebar';
-
 import { Header } from './header';
 import { Sidebar } from './sidebar';
 
@@ -66,7 +63,9 @@ export function Layout({ children, user }: { children: React.ReactNode; user: Us
       />
       <div className="flex-1">
         <Header user={user} />
-        <main className="flex-1 p-4 md:p-6">{children}</main>
+        <main id="main-content" className="flex-1 p-4 md:p-6">
+          {children}
+        </main>
       </div>
     </div>
   );

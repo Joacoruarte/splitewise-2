@@ -2,16 +2,13 @@ import { useGetGroupInvite } from '@/hooks/use-get-group-invite';
 import { useGroupInviteActions } from '@/hooks/use-group-invite-actions';
 import { GroupWithRelations } from '@/models/group';
 import { Calendar, Check, X } from 'lucide-react';
-
 import Image from 'next/image';
 import Link from 'next/link';
-
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-
 import { capitalize } from '@/lib/utils';
 
 export function GroupCard({ group }: { group: GroupWithRelations }) {

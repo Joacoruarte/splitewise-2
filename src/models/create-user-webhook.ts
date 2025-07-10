@@ -7,7 +7,6 @@ interface Eventattributes {
   http_request: Httprequest;
 }
 
-// interface Privatemetadata {}
 type Privatemetadata = Record<string, unknown>;
 
 interface Verification {
