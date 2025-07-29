@@ -84,12 +84,12 @@ export default function GroupInfoSection({ groupId }: { groupId: string }) {
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
                 <h1 className="text-2xl font-bold">{group?.name}</h1>
-                <Badge variant="secondary">{capitalize(group.tags[0].name)}</Badge>
+                <Badge variant="secondary">{capitalize(group?.tags[0]?.name) || ''}</Badge>
                 <Badge variant="outline">{group.isPublic ? 'Público' : 'Privado'}</Badge>
               </div>
               <p className="text-muted-foreground mb-4">{group.description}</p>
               <div className="flex flex-wrap gap-1 mb-4">
-                {group.tags.map((tag, index) => (
+                {group?.tags?.map((tag, index) => (
                   <Badge key={index} variant="outline" className="text-xs">
                     {capitalize(tag.name)}
                   </Badge>

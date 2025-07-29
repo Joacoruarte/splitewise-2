@@ -2,14 +2,13 @@
 
 import { Progress } from '@radix-ui/react-progress';
 import { Car, Coffee, Plane, Plus, ShoppingBag, Utensils } from 'lucide-react';
-
 import { useState } from 'react';
-
+import { useParams } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Modal } from '@/components/ui/modal';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
 import { AddExpenseDialog } from '../dialog/add-expense.dialog';
 
 // Datos de ejemplo
@@ -70,13 +69,14 @@ const categoryExpenses = [
 ];
 
 export function ExpenseHistorySection() {
+  const { group_id: groupId } = useParams<{ group_id: string }>();
   const [showAddExpense, setShowAddExpense] = useState(false);
 
   return (
     <>
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold tracking-tight">Gastos</h2>
-        <Button onClick={() => setShowAddExpense(true)}>
+        <Button onClick={() => setShowAddExpense(true)} className="cursor-pointer">
           <Plus className="mr-2 h-4 w-4" /> Nuevo Gasto
         </Button>
       </div>
@@ -153,7 +153,9 @@ export function ExpenseHistorySection() {
         </TabsContent>
       </Tabs>
 
-      <AddExpenseDialog open={showAddExpense} onOpenChange={setShowAddExpense} />
+      <Modal isOpen={showAddExpense} onClose={() => setShowAddExpense(false)}>
+        <AddExpenseDialog groupId={groupId} onClose={() => setShowAddExpense(false)} />
+      </Modal>
     </>
   );
 }

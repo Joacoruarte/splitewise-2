@@ -1,5 +1,6 @@
 'use client';
 
+import { NotAvailableYet } from '@/components/not-available-yet';
 import { DebtDetailSection } from './components/sections/debt-detail.section';
 import { ExpenseHistorySection } from './components/sections/expense-history.section';
 import GroupInfoSection from './components/sections/group-info.section';
@@ -17,8 +18,10 @@ export function GroupPageClient({ groupId }: { groupId: string }) {
         <NotGroupMember />
       ) : (
         <>
-          <DebtDetailSection />
           <ExpenseHistorySection />
+          <NotAvailableYet>
+            <DebtDetailSection />
+          </NotAvailableYet>
         </>
       )}
     </div>
