@@ -1,6 +1,8 @@
 'use client';
 
+import { useCreateExpense } from '@/hooks/expenses/create/use-create-expense';
 import { useGetExpenseCategories } from '@/hooks/use-get-expense-categories';
+import { toast } from 'sonner';
 import type React from 'react';
 import { useState } from 'react';
 import CurrencyInput from 'react-currency-input-field';
@@ -25,8 +27,14 @@ export function AddExpenseDialog({ groupId, onClose }: { groupId: string; onClos
   const [selectedFriends, setSelectedFriends] = useState<string[]>([]);
   const [splitMethod, setSplitMethod] = useState('equal');
   const [amount, setAmount] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
+  const [categoryId, setCategoryId] = useState<string>('');
+  const [splitDetails, setSplitDetails] = useState<{ [userId: string]: number }>({});
+
   const { data: categories, isLoading: isLoadingCategories } = useGetExpenseCategories();
   const { data: groupMembers, isLoading: isLoadingGroupMembers } = useGetGroupMembers({ groupId });
+  const { createExpense, validateExpense, isPending } = useCreateExpense({ groupId });
 
   const toggleFriend = (friendId: string) => {
     setSelectedFriends(prev =>
@@ -39,10 +47,50 @@ export function AddExpenseDialog({ groupId, onClose }: { groupId: string; onClos
     setAmount(value || '');
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleDotChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+
+    if (value[value.length - 1] === '.') {
+      value = value.replace(/\./g, '');
+      value = `${value},`;
+      setAmount(value);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aquí iría la lógica para guardar el gasto
-    onClose();
+
+    const expenseData = {
+      description: description.trim(),
+      amount: parseFloat(amount.replace(',', '.')),
+      date,
+      categoryId,
+      groupId,
+      participants: selectedFriends,
+      splitMethod: splitMethod as 'equal' | 'percentage' | 'exact',
+      splitDetails: splitMethod !== 'equal' ? splitDetails : undefined,
+    };
+
+    // Validar con Zod
+    const validation = validateExpense(expenseData);
+    if (!validation.success) {
+      // Mostrar el primer error encontrado
+      const firstError = validation.errors?.errors[0];
+      if (firstError) {
+        toast.error(firstError.message);
+      } else {
+        toast.error('Datos del formulario inválidos');
+      }
+      return;
+    }
+
+    try {
+      await createExpense(expenseData);
+      onClose();
+    } catch (error) {
+      // El error ya se maneja en el hook
+      console.error('Error al crear el gasto:', error);
+    }
   };
 
   return (
@@ -56,7 +104,13 @@ export function AddExpenseDialog({ groupId, onClose }: { groupId: string; onClos
       <div className="grid gap-4 py-4">
         <div className="grid gap-2">
           <Label htmlFor="description">Descripción</Label>
-          <Input id="description" placeholder="Ej: Cena en restaurante" required />
+          <Input
+            id="description"
+            placeholder="Ej: Cena en restaurante"
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+            required
+          />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="amount">Monto ($)</Label>
@@ -72,11 +126,7 @@ export function AddExpenseDialog({ groupId, onClose }: { groupId: string; onClos
               'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive'
             )}
             value={amount}
-            onChange={e => {
-              const value = e.target.value;
-              console.log(value.slice(0, -1) + ',');
-              if (value[value.length - 1] === '.') setAmount(value.slice(0, -1) + ',');
-            }}
+            onChange={handleDotChange}
             onValueChange={handleAmountChange}
           />
         </div>
@@ -85,7 +135,8 @@ export function AddExpenseDialog({ groupId, onClose }: { groupId: string; onClos
           <Input
             id="date"
             type="date"
-            defaultValue={new Date().toISOString().split('T')[0]}
+            value={date}
+            onChange={e => setDate(e.target.value)}
             required
           />
         </div>
@@ -94,7 +145,7 @@ export function AddExpenseDialog({ groupId, onClose }: { groupId: string; onClos
           {isLoadingCategories ? (
             <Skeleton className="h-10 w-full" />
           ) : (
-            <Select defaultValue={categories?.[0]?.id || ''}>
+            <Select value={categoryId} onValueChange={setCategoryId}>
               <SelectTrigger>
                 <SelectValue placeholder="Selecciona una categoría" />
               </SelectTrigger>
@@ -173,6 +224,14 @@ export function AddExpenseDialog({ groupId, onClose }: { groupId: string; onClos
                         placeholder={splitMethod === 'percentage' ? '%' : '€'}
                         min="0"
                         step={splitMethod === 'percentage' ? '1' : '0.01'}
+                        value={splitDetails[memberId] || ''}
+                        onChange={e => {
+                          const value = parseFloat(e.target.value) || 0;
+                          setSplitDetails(prev => ({
+                            ...prev,
+                            [memberId]: value,
+                          }));
+                        }}
                       />
                     </div>
                   );
@@ -185,10 +244,12 @@ export function AddExpenseDialog({ groupId, onClose }: { groupId: string; onClos
         )}
       </div>
       <DialogFooter>
-        <Button type="button" variant="outline" onClick={() => onClose()}>
+        <Button type="button" variant="outline" onClick={() => onClose()} disabled={isPending}>
           Cancelar
         </Button>
-        <Button type="submit">Guardar Gasto</Button>
+        <Button type="submit" disabled={isPending}>
+          {isPending ? 'Guardando...' : 'Guardar Gasto'}
+        </Button>
       </DialogFooter>
     </form>
   );
