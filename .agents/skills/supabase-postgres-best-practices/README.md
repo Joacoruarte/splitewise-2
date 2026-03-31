@@ -1,7 +1,7 @@
 # Supabase Postgres Best Practices - Contributor Guide
 
 This skill contains Postgres performance optimization references optimized for
-AI agents and LLMs. It follows the [Agent Skills Open Standard](https://agentskills.io/).
+AI agents and LLMs. It follows the [Agent Skills Open Standard](https://agentskills.io/)
 
 ## Quick Start
 
