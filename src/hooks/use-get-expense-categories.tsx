@@ -1,5 +1,5 @@
-import { getExpenseCategories } from '@/actions/expenses';
 import { useQuery } from '@tanstack/react-query';
+import { getExpenseCategories } from '@/actions/expenses';
 
 export const useGetExpenseCategories = () => {
   return useQuery({

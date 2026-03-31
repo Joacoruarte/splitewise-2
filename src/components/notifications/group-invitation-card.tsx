@@ -1,7 +1,7 @@
 'use client';
 
-import { Notification } from '@prisma/generated/prisma/client';
 import { Check, Users, X } from 'lucide-react';
+import { Notification } from '@prisma/generated/prisma/client';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

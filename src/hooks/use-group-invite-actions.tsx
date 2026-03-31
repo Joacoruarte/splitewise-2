@@ -1,11 +1,11 @@
 'use client';
 
-import { updateGroupInvitation } from '@/actions/groups';
-import { InvitationStatus } from '@prisma/generated/prisma/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import { useRouter } from 'next/navigation';
+import { InvitationStatus } from '@prisma/generated/prisma/client';
+import { updateGroupInvitation } from '@/actions/groups';
 
 interface UseGroupInviteActionsReturn {
   acceptInvitation: (invitationId: string, groupId: string) => Promise<void>;

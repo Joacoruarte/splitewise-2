@@ -1,8 +1,8 @@
 'use client';
 
-import { removeGroupMember } from '@/actions/groups';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { removeGroupMember } from '@/actions/groups';
 
 interface UseRemoveGroupMemberProps {
   groupId?: string;

@@ -1,8 +1,7 @@
-import { GroupWithRelations } from '@/models/group';
-
 import { GroupCard } from '../group-card';
 import { GroupsLoadingSkeleton } from '../skeletons/groups-loading.skeleton';
 import { EmptyStateSection } from './empty-state-section';
+import { GroupWithRelations } from '@/models/group';
 
 interface GroupsListSectionProps {
   groups: GroupWithRelations[];

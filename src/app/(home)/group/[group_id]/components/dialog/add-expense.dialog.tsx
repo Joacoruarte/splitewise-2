@@ -1,11 +1,12 @@
 'use client';
 
-import { useCreateExpense } from '@/hooks/expenses/create/use-create-expense';
-import { useGetExpenseCategories } from '@/hooks/use-get-expense-categories';
 import { toast } from 'sonner';
 import type React from 'react';
 import { useState } from 'react';
 import CurrencyInput from 'react-currency-input-field';
+import useGetGroupMembers from '../../hooks/use-get-group-members';
+import { useCreateExpense } from '@/hooks/expenses/create/use-create-expense';
+import { useGetExpenseCategories } from '@/hooks/use-get-expense-categories';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -21,7 +22,6 @@ import {
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { capitalize, cn } from '@/lib/utils';
-import useGetGroupMembers from '../../hooks/use-get-group-members';
 
 export function AddExpenseDialog({ groupId, onClose }: { groupId: string; onClose: () => void }) {
   const [selectedFriends, setSelectedFriends] = useState<string[]>([]);
@@ -174,7 +174,7 @@ export function AddExpenseDialog({ groupId, onClose }: { groupId: string; onClos
                   />
                   <Label
                     htmlFor={`friend-${member.id}`}
-                    className="flex items-center gap-2 cursor-pointer"
+                    className="flex cursor-pointer items-center gap-2"
                   >
                     <Avatar className="h-6 w-6">
                       <AvatarImage src={member.user.picture || ''} />
@@ -201,8 +201,8 @@ export function AddExpenseDialog({ groupId, onClose }: { groupId: string; onClos
           </Select>
         </div>
         {splitMethod !== 'equal' && (
-          <div className="rounded-md border p-3 bg-muted/50">
-            <p className="text-sm text-muted-foreground mb-2">
+          <div className="bg-muted/50 rounded-md border p-3">
+            <p className="text-muted-foreground mb-2 text-sm">
               {splitMethod === 'percentage'
                 ? 'Asigna un porcentaje a cada persona'
                 : 'Asigna un monto exacto a cada persona'}
@@ -220,7 +220,7 @@ export function AddExpenseDialog({ groupId, onClose }: { groupId: string; onClos
                       <span className="text-sm">{member?.user.name}</span>
                       <Input
                         type="number"
-                        className="h-8 w-20 ml-auto"
+                        className="ml-auto h-8 w-20"
                         placeholder={splitMethod === 'percentage' ? '%' : '€'}
                         min="0"
                         step={splitMethod === 'percentage' ? '1' : '0.01'}
@@ -238,7 +238,7 @@ export function AddExpenseDialog({ groupId, onClose }: { groupId: string; onClos
                 })}
               </div>
             ) : (
-              <p className="text-sm text-muted-foreground">Selecciona participantes primero</p>
+              <p className="text-muted-foreground text-sm">Selecciona participantes primero</p>
             )}
           </div>
         )}

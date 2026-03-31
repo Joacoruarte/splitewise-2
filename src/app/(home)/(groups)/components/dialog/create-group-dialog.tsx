@@ -1,13 +1,13 @@
 'use client';
 
+import { toast } from 'sonner';
+import { z } from 'zod';
+import type React from 'react';
+import { useState } from 'react';
+import { useGetGroupCategories } from '../../hooks/useGetGroupCategories';
 import { createGroup } from '@/actions/groups';
 import { useGetUsers } from '@/hooks/use-get-users';
 import { CreateGroupData, createGroupSchema } from '@/models/group';
-import { toast } from 'sonner';
-import { z } from 'zod';
-
-import type React from 'react';
-import { useState } from 'react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -26,8 +26,6 @@ import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 
 import { capitalize } from '@/lib/utils';
-
-import { useGetGroupCategories } from '../../hooks/useGetGroupCategories';
 
 export function CreateGroupDialog({ onOpenChange }: { onOpenChange: (open: boolean) => void }) {
   const { data: groupCategories, isLoading: isLoadingGroupCategories } = useGetGroupCategories();
@@ -178,7 +176,7 @@ export function CreateGroupDialog({ onOpenChange }: { onOpenChange: (open: boole
 
         <div className="grid gap-2">
           <Label>Invitar Amigos</Label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[100px] overflow-y-auto p-1">
+          <div className="grid max-h-[100px] grid-cols-1 gap-2 overflow-y-auto p-1 sm:grid-cols-2">
             {isLoadingUsers
               ? Array.from({ length: 10 }).map((_, index) => (
                   <Skeleton key={index} className="h-6 w-full" />
@@ -190,11 +188,11 @@ export function CreateGroupDialog({ onOpenChange }: { onOpenChange: (open: boole
                       id={`friend-${user.id}`}
                       checked={formData.selectedFriends.includes(user.id)}
                       onChange={() => toggleFriend(user.id)}
-                      className="rounded border-gray-300 text-primary focus:ring-primary"
+                      className="text-primary focus:ring-primary rounded border-gray-300"
                     />
                     <Label
                       htmlFor={`friend-${user.id}`}
-                      className="flex items-center gap-2 cursor-pointer"
+                      className="flex cursor-pointer items-center gap-2"
                     >
                       <Avatar className="h-6 w-6">
                         <AvatarImage src={user.picture || '/placeholder.svg'} />
@@ -215,7 +213,7 @@ export function CreateGroupDialog({ onOpenChange }: { onOpenChange: (open: boole
           />
           <Label htmlFor="public">Grupo Público</Label>
         </div>
-        <p className="text-xs text-muted-foreground -mt-2">
+        <p className="text-muted-foreground -mt-2 text-xs">
           Los grupos públicos pueden ser encontrados por cualquier usuario de la plataforma
         </p>
       </div>

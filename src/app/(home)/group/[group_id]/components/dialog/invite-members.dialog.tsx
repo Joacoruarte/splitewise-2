@@ -1,21 +1,21 @@
 'use client';
 
-import { useSendGroupInvitations } from '@/app/(home)/group/[group_id]/hooks/use-send-group-invitations';
-import { useDeleteInvite } from '@/hooks/use-delete-invite';
-import { useSearchUsers } from '@/hooks/use-search-users';
-import { useSession } from '@/providers/session-provider';
 import { Loader2, Search, Trash } from 'lucide-react';
 import type React from 'react';
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
+import useGetGroupById from '../../hooks/use-get-group-by-id';
+import { useGetInvitedUsersByGroup } from '../../hooks/use-get-invited-users-by-group';
+import { useSendGroupInvitations } from '@/app/(home)/group/[group_id]/hooks/use-send-group-invitations';
+import { useDeleteInvite } from '@/hooks/use-delete-invite';
+import { useSearchUsers } from '@/hooks/use-search-users';
+import { useSession } from '@/providers/session-provider';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import useGetGroupById from '../../hooks/use-get-group-by-id';
-import { useGetInvitedUsersByGroup } from '../../hooks/use-get-invited-users-by-group';
 
 interface InviteMembersDialogProps {
   onClose: () => void;
@@ -71,8 +71,8 @@ export function InviteMembersDialog({ onClose }: InviteMembersDialogProps) {
           <DialogDescription>Busca y selecciona amigos para invitar al grupo.</DialogDescription>
         </DialogHeader>
         <div className="flex items-center justify-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-          <span className="ml-3 text-sm text-muted-foreground">
+          <Loader2 className="text-muted-foreground h-8 w-8 animate-spin" />
+          <span className="text-muted-foreground ml-3 text-sm">
             Cargando información del grupo...
           </span>
         </div>
@@ -91,13 +91,13 @@ export function InviteMembersDialog({ onClose }: InviteMembersDialogProps) {
         <div className="space-y-2">
           <Label htmlFor="search">Buscar amigos</Label>
           <div className="relative">
-            <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="text-muted-foreground absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 transform" />
             <Input
               id="search"
               placeholder="Buscar por nombre o email..."
               value={searchQuery}
               onChange={handleSearch}
-              className="pl-4 pr-10"
+              className="pr-10 pl-4"
             />
           </div>
         </div>
@@ -106,11 +106,11 @@ export function InviteMembersDialog({ onClose }: InviteMembersDialogProps) {
         {invitedUsers && invitedUsers.length > 0 && (
           <div className="space-y-2">
             <Label>Usuarios ya invitados</Label>
-            <div className="space-y-2 max-h-[200px] overflow-y-auto">
+            <div className="max-h-[200px] space-y-2 overflow-y-auto">
               {invitedUsers.map(user => (
                 <div
                   key={user.id}
-                  className="flex items-center justify-between p-2 rounded-lg border bg-muted/50"
+                  className="bg-muted/50 flex items-center justify-between rounded-lg border p-2"
                 >
                   <div className="flex items-center gap-3">
                     <Avatar className="h-8 w-8">
@@ -125,7 +125,7 @@ export function InviteMembersDialog({ onClose }: InviteMembersDialogProps) {
                     </Avatar>
                     <div>
                       <p className="text-sm font-medium">{user.name}</p>
-                      <p className="text-xs text-muted-foreground">{user.email}</p>
+                      <p className="text-muted-foreground text-xs">{user.email}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -145,7 +145,7 @@ export function InviteMembersDialog({ onClose }: InviteMembersDialogProps) {
                         disabled={isDeleting}
                       >
                         {isDeleting ? (
-                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <Loader2 className="h-4 w-4 animate-spin" />
                         ) : (
                           <Trash className="w-4" />
                         )}
@@ -161,21 +161,21 @@ export function InviteMembersDialog({ onClose }: InviteMembersDialogProps) {
         {/* Resultados de búsqueda */}
         <div className="space-y-2">
           <Label>Usuarios Encontrados</Label>
-          <div className="space-y-2 max-h-[300px] overflow-y-auto">
+          <div className="max-h-[300px] space-y-2 overflow-y-auto">
             {isLoading ? (
               <div className="flex items-center justify-center py-8">
-                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-                <span className="ml-2 text-sm text-muted-foreground">Buscando usuarios...</span>
+                <Loader2 className="text-muted-foreground h-5 w-5 animate-spin" />
+                <span className="text-muted-foreground ml-2 text-sm">Buscando usuarios...</span>
               </div>
             ) : error ? (
-              <div className="text-center py-8 text-destructive">
+              <div className="text-destructive py-8 text-center">
                 <p>{error}</p>
               </div>
             ) : availableUsers.length > 0 ? (
               availableUsers.map(user => (
                 <div
                   key={user.id}
-                  className="flex items-center justify-between p-2 rounded-lg border"
+                  className="flex items-center justify-between rounded-lg border p-2"
                 >
                   <div className="flex items-center gap-3">
                     <Avatar className="h-8 w-8">
@@ -190,7 +190,7 @@ export function InviteMembersDialog({ onClose }: InviteMembersDialogProps) {
                     </Avatar>
                     <div>
                       <p className="text-sm font-medium">{user.name}</p>
-                      <p className="text-xs text-muted-foreground">{user.email}</p>
+                      <p className="text-muted-foreground text-xs">{user.email}</p>
                     </div>
                   </div>
                   <Button
@@ -204,11 +204,11 @@ export function InviteMembersDialog({ onClose }: InviteMembersDialogProps) {
                 </div>
               ))
             ) : searchQuery.trim() ? (
-              <div className="text-sm text-center py-8 text-muted-foreground">
+              <div className="text-muted-foreground py-8 text-center text-sm">
                 <p>No se encontraron usuarios que coincidan con tu búsqueda.</p>
               </div>
             ) : (
-              <div className="text-sm text-center py-8 text-muted-foreground">
+              <div className="text-muted-foreground py-8 text-center text-sm">
                 <p>Escribe en la barra de búsqueda para encontrar usuarios.</p>
               </div>
             )}

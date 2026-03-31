@@ -1,5 +1,5 @@
-import { getGroups } from '@/actions/groups';
 import { useQuery } from '@tanstack/react-query';
+import { getGroups } from '@/actions/groups';
 
 interface UseGetGroupsProps {
   categoryId?: string;

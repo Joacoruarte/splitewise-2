@@ -1,11 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 'use server';
 
 import { getLogger } from '@/lib/logger';
 import { prisma } from '@/lib/prisma';
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 

@@ -1,10 +1,10 @@
-import { getUsers } from '@/actions/users';
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
 import { StepBack } from 'lucide-react';
 
 import { Suspense } from 'react';
 
 import Link from 'next/link';
+import { getUsers } from '@/actions/users';
 
 import { CreateUserForm } from '@/components/dashboard/create-user-form';
 import { UserList } from '@/components/dashboard/user-list';
@@ -28,9 +28,9 @@ export default async function DashboardPage() {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="min-h-screen bg-gray-50">
-        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
           <div className="px-4 py-6 sm:px-0">
-            <h1 className="flex items-center gap-2 text-3xl font-bold text-gray-900 mb-8">
+            <h1 className="mb-8 flex items-center gap-2 text-3xl font-bold text-gray-900">
               <Link href="/">
                 <StepBack />
               </Link>
@@ -39,14 +39,14 @@ export default async function DashboardPage() {
 
             <div className="grid grid-cols-1 gap-8">
               {/* Create User Section */}
-              <section className="bg-white p-6 rounded-lg shadow">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Create New User</h2>
+              <section className="rounded-lg bg-white p-6 shadow">
+                <h2 className="mb-4 text-xl font-semibold text-gray-900">Create New User</h2>
                 <CreateUserForm />
               </section>
 
               {/* User List Section */}
-              <section className="bg-white p-6 rounded-lg shadow">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">User Management</h2>
+              <section className="rounded-lg bg-white p-6 shadow">
+                <h2 className="mb-4 text-xl font-semibold text-gray-900">User Management</h2>
                 <Suspense fallback={<UserListSkeleton />}>
                   <UserList />
                 </Suspense>

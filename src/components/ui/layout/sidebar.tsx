@@ -1,6 +1,6 @@
-import { User } from '@prisma/generated/prisma/client';
 import { Clock, CreditCard, Home, PieChart, Settings, Users } from 'lucide-react';
 import Link from 'next/link';
+import { User } from '@prisma/generated/prisma/client';
 import { ModeToggle } from '@/components/mode-toggle';
 import { ProfilePicture } from '@/components/ui/profile-picture';
 import {

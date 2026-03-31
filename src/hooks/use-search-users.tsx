@@ -1,10 +1,10 @@
 'use client';
 
-import { searchNotGroupMemberUsers, searchUsers } from '@/actions/users';
 import { useQuery } from '@tanstack/react-query';
 import { useDebounce } from 'use-debounce';
 
 import { useState } from 'react';
+import { searchNotGroupMemberUsers, searchUsers } from '@/actions/users';
 
 interface User {
   id: string;

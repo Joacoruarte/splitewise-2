@@ -1,9 +1,9 @@
 'use client';
 
-import { getUsers } from '@/actions/users';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { UserListItem } from './user-list-item';
+import { getUsers } from '@/actions/users';
 
 export function UserList() {
   const { data: users } = useSuspenseQuery({
@@ -16,7 +16,7 @@ export function UserList() {
   });
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {users.map(user => (
         <UserListItem key={user.id} user={user} />
       ))}

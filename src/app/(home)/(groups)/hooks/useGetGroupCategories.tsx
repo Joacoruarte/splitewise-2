@@ -1,7 +1,7 @@
 'use client';
 
-import { getGroupCategories } from '@/actions/groups';
 import { useQuery } from '@tanstack/react-query';
+import { getGroupCategories } from '@/actions/groups';
 
 export const useGetGroupCategories = () => {
   return useQuery({

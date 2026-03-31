@@ -1,10 +1,10 @@
 'use client';
 
-import { deleteUser } from '@/actions/users';
-import { User } from '@prisma/generated/prisma/client';
 import { useMutation } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { User } from '@prisma/generated/prisma/client';
+import { deleteUser } from '@/actions/users';
 
 export function UserListItem({ user }: { user: User }) {
   const queryClient = useQueryClient();

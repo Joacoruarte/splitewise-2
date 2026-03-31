@@ -4,10 +4,10 @@ import type { Metadata, Viewport } from 'next';
 import { Poppins } from 'next/font/google';
 import { cookies } from 'next/headers';
 
+import Providers from './providers';
 import { Theme } from '@/lib/theme';
 
 import './globals.css';
-import Providers from './providers';
 
 const poppins = Poppins({
   variable: '--font-poppins',

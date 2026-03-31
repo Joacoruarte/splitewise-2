@@ -1,7 +1,7 @@
-import { getGroups } from '@/actions/groups';
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
 
 import { GroupsContent } from './components/groups-content';
+import { getGroups } from '@/actions/groups';
 
 export const metadata = {
   title: 'SplitWise - Home Groups',

@@ -1,5 +1,5 @@
-import { CreateUserWebhookBody } from '@/models/create-user-webhook';
 import { NextResponse } from 'next/server';
+import { CreateUserWebhookBody } from '@/models/create-user-webhook';
 import { getLogger } from '@/lib/logger';
 import { prisma } from '@/lib/prisma';
 

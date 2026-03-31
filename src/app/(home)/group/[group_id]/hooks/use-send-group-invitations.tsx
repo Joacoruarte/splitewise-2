@@ -1,9 +1,9 @@
 'use client';
 
-import { sendGroupInvitations } from '@/actions/groups';
-import { sendGroupInvitationNotifications } from '@/actions/notifications';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { sendGroupInvitations } from '@/actions/groups';
+import { sendGroupInvitationNotifications } from '@/actions/notifications';
 
 interface UseSendGroupInvitationsProps {
   groupId: string;

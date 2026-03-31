@@ -1,9 +1,9 @@
-import { useGetGroupInvite } from '@/hooks/use-get-group-invite';
-import { useGroupInviteActions } from '@/hooks/use-group-invite-actions';
-import { GroupWithRelations } from '@/models/group';
 import { Calendar, Check, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useGetGroupInvite } from '@/hooks/use-get-group-invite';
+import { useGroupInviteActions } from '@/hooks/use-group-invite-actions';
+import { GroupWithRelations } from '@/models/group';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -38,7 +38,7 @@ export function GroupCard({ group }: { group: GroupWithRelations }) {
     <Card key={group.id} className="relative">
       <CardContent className="p-4">
         <div className="flex flex-col gap-4 sm:flex-row">
-          <div className="h-24 w-24 shrink-0 overflow-hidden rounded-md bg-muted">
+          <div className="bg-muted h-24 w-24 shrink-0 overflow-hidden rounded-md">
             <Image
               src={group.picture || '/group-placeholder.webp'}
               alt={group.name}
@@ -51,7 +51,7 @@ export function GroupCard({ group }: { group: GroupWithRelations }) {
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <h3 className="text-lg font-semibold">{group.name}</h3>
-                <p className="text-sm text-muted-foreground mt-1">{group.description}</p>
+                <p className="text-muted-foreground mt-1 text-sm">{group.description}</p>
               </div>
               {/* Not implemented yet */}
             </div>
@@ -67,24 +67,24 @@ export function GroupCard({ group }: { group: GroupWithRelations }) {
                 <div className="flex items-center gap-1">
                   <div className="flex -space-x-2">
                     {group.members?.map((avatar, index) => (
-                      <Avatar key={index} className="border-2 border-background h-8 w-8">
+                      <Avatar key={index} className="border-background h-8 w-8 border-2">
                         <AvatarImage src={avatar.user.picture || '/placeholder.svg'} />
                         <AvatarFallback>{avatar.user.name.charAt(0)}</AvatarFallback>
                       </Avatar>
                     ))}
                     {group?._count?.members && group._count.members > 3 && (
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-background bg-muted text-xs font-medium">
+                      <div className="border-background bg-muted flex h-8 w-8 items-center justify-center rounded-full border-2 text-xs font-medium">
                         +{group._count.members - 3}
                       </div>
                     )}
                   </div>{' '}
-                  <span className="text-sm text-muted-foreground">
+                  <span className="text-muted-foreground text-sm">
                     {group._count?.members} miembros
                   </span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">
+                  <Calendar className="text-muted-foreground h-4 w-4" />
+                  <span className="text-muted-foreground text-sm">
                     {group.updatedAt.toLocaleDateString('es-ES', {
                       day: '2-digit',
                       month: '2-digit',
@@ -98,8 +98,8 @@ export function GroupCard({ group }: { group: GroupWithRelations }) {
                 {!group.isCurrentUserMember && isLoading ? (
                   <Skeleton className="h-8 w-24" />
                 ) : hasInvite ? (
-                  <div className="absolute right-4 top-4 flex flex-col justify-end items-end gap-2">
-                    <p className="text-[12px] italic text-muted-foreground">
+                  <div className="absolute top-4 right-4 flex flex-col items-end justify-end gap-2">
+                    <p className="text-muted-foreground text-[12px] italic">
                       Tienes una invitación a unirte a este grupo
                     </p>
                     <div className="flex gap-2">
@@ -109,7 +109,7 @@ export function GroupCard({ group }: { group: GroupWithRelations }) {
                         disabled={isUpdating}
                         className="cursor-pointer"
                       >
-                        <Check className="h-3 w-3 mr-1" />
+                        <Check className="mr-1 h-3 w-3" />
                         Aceptar
                       </Button>
                       <Button
@@ -119,7 +119,7 @@ export function GroupCard({ group }: { group: GroupWithRelations }) {
                         disabled={isUpdating}
                         className="cursor-pointer"
                       >
-                        <X className="h-3 w-3 mr-1" />
+                        <X className="mr-1 h-3 w-3" />
                         Rechazar
                       </Button>
                     </div>

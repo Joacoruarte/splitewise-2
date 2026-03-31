@@ -2,12 +2,11 @@
 
 import { useState } from 'react';
 
-import { Modal } from '@/components/ui/modal';
-
 import { useGetGroups } from '../hooks/useGetGroups';
 import { CreateGroupDialog } from './dialog/create-group-dialog';
 import { GroupsControlPanel } from './sections/groups-control-panel.section';
 import { GroupsListSection } from './sections/groups-list.section';
+import { Modal } from '@/components/ui/modal';
 
 export function GroupsContent() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -25,7 +24,7 @@ export function GroupsContent() {
   };
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
+    <div className="mx-auto max-w-7xl space-y-6">
       <GroupsControlPanel
         setSearchQuery={setSearchQuery}
         selectedCategory={selectedCategory}

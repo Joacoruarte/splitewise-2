@@ -1,10 +1,9 @@
 'use server';
 
-import { NotFoundError } from '@/models/errors/common';
 import { currentUser } from '@clerk/nextjs/server';
-import { User } from '@prisma/generated/prisma/client';
-
 import { revalidatePath } from 'next/cache';
+import { NotFoundError } from '@/models/errors/common';
+import { User } from '@prisma/generated/prisma/client';
 
 import { prisma } from '@/lib/prisma';
 

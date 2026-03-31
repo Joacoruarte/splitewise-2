@@ -1,11 +1,11 @@
-import { getUserByExternalId } from '@/actions/users';
 import { auth } from '@clerk/nextjs/server';
-import { User } from '@prisma/generated/prisma/client';
 
 import type React from 'react';
 
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { User } from '@prisma/generated/prisma/client';
+import { getUserByExternalId } from '@/actions/users';
 
 import HomeLayoutClient from '@/components/ui/layout';
 

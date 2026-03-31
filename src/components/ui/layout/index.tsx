@@ -1,11 +1,11 @@
 'use client';
 
-import { SessionProvider } from '@/providers/session-provider';
-import { User } from '@prisma/generated/prisma/client';
 import { useState } from 'react';
-import { SIDEBAR_WIDTH, SidebarProvider, useSidebar } from '@/components/ui/sidebar';
 import { Header } from './header';
 import { Sidebar } from './sidebar';
+import { SessionProvider } from '@/providers/session-provider';
+import { User } from '@prisma/generated/prisma/client';
+import { SIDEBAR_WIDTH, SidebarProvider, useSidebar } from '@/components/ui/sidebar';
 
 const SIDEBAR_WIDTH_PX = Number(SIDEBAR_WIDTH.replace('rem', '')) * 16;
 const MIN_SIDEBAR_WIDTH_PX = SIDEBAR_WIDTH_PX;

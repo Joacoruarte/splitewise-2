@@ -1,9 +1,8 @@
+import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
+import { notFound, redirect } from 'next/navigation';
 import { getGroupById } from '@/actions/groups';
 import { GroupPageClient } from '@/app/(home)/group/[group_id]/page.client';
 import { NotFoundError } from '@/models/errors/common';
-import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
-
-import { notFound, redirect } from 'next/navigation';
 
 import { getLogger } from '@/lib/logger';
 

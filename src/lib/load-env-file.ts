@@ -1,6 +1,6 @@
-import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
+import dotenv from 'dotenv';
 
 /**
  * Carga un archivo .env y devuelve un objeto con las variables (sin modificar process.env)

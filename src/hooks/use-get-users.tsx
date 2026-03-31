@@ -1,5 +1,5 @@
-import { getUsers, getUsersExceptCurrent } from '@/actions/users';
 import { useQuery } from '@tanstack/react-query';
+import { getUsers, getUsersExceptCurrent } from '@/actions/users';
 
 export const useGetUsers = ({ excludeCurrentUser = true }: { excludeCurrentUser?: boolean }) => {
   return useQuery({

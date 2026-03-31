@@ -1,11 +1,11 @@
 'use client';
 
-import { User } from '@prisma/generated/prisma/client';
 import { PlusCircle } from 'lucide-react';
 
 import { useState } from 'react';
 
 import Link from 'next/link';
+import { User } from '@prisma/generated/prisma/client';
 
 import UserNotifications from '@/components/notifications/user-notifications';
 import { Button } from '@/components/ui/button';

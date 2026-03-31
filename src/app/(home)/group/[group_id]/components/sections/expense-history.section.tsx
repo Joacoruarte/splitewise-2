@@ -4,12 +4,12 @@ import { Progress } from '@radix-ui/react-progress';
 import { Car, Coffee, Plane, Plus, ShoppingBag, Utensils } from 'lucide-react';
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
+import { AddExpenseDialog } from '../dialog/add-expense.dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Modal } from '@/components/ui/modal';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AddExpenseDialog } from '../dialog/add-expense.dialog';
 
 // Datos de ejemplo
 const recentExpenses = [
@@ -74,7 +74,7 @@ export function ExpenseHistorySection() {
 
   return (
     <>
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold tracking-tight">Gastos</h2>
         <Button onClick={() => setShowAddExpense(true)} className="cursor-pointer">
           <Plus className="mr-2 h-4 w-4" /> Nuevo Gasto
@@ -97,13 +97,13 @@ export function ExpenseHistorySection() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div
-                      className={`flex h-10 w-10 items-center justify-center rounded-full bg-primary/10`}
+                      className={`bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full`}
                     >
-                      <expense.icon className="h-5 w-5 text-primary" />
+                      <expense.icon className="text-primary h-5 w-5" />
                     </div>
                     <div>
                       <p className="font-medium">{expense.description}</p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-muted-foreground text-xs">
                         {new Date(expense.date).toLocaleDateString('es-ES', {
                           day: 'numeric',
                           month: 'short',
@@ -114,7 +114,7 @@ export function ExpenseHistorySection() {
                   </div>
                   <div className="text-right">
                     <p className="font-medium">€{expense.amount.toFixed(2)}</p>
-                    <div className="flex flex-wrap gap-1 mt-1 justify-end">
+                    <div className="mt-1 flex flex-wrap justify-end gap-1">
                       {expense.participants.map((participant, i) => (
                         <Badge key={i} variant="outline" className="text-xs">
                           {participant}

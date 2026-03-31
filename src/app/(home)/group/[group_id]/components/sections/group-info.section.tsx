@@ -1,6 +1,5 @@
 'use client';
 
-import { useLeaveGroup } from '@/app/(home)/group/[group_id]/hooks/use-leave-group';
 import {
   ArrowLeft,
   Calendar,
@@ -14,6 +13,10 @@ import {
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import useGetGroupById from '../../hooks/use-get-group-by-id';
+import { InviteMembersDialog } from '../dialog/invite-members.dialog';
+import { MembersDialog } from '../dialog/members.dialog';
+import { useLeaveGroup } from '@/app/(home)/group/[group_id]/hooks/use-leave-group';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -25,9 +28,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Modal } from '@/components/ui/modal';
 import { capitalize, copyToClipboard } from '@/lib/utils';
-import useGetGroupById from '../../hooks/use-get-group-by-id';
-import { InviteMembersDialog } from '../dialog/invite-members.dialog';
-import { MembersDialog } from '../dialog/members.dialog';
 
 export default function GroupInfoSection({ groupId }: { groupId: string }) {
   const [showInviteMembersDialog, setShowInviteMembersDialog] = useState(false);
@@ -56,7 +56,7 @@ export default function GroupInfoSection({ groupId }: { groupId: string }) {
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="sm" asChild>
           <Link href="/">
-            <ArrowLeft className="h-4 w-4 mr-2" />
+            <ArrowLeft className="mr-2 h-4 w-4" />
             Volver a Grupos
           </Link>
         </Button>
@@ -68,7 +68,7 @@ export default function GroupInfoSection({ groupId }: { groupId: string }) {
         <div className="relative">
           <div className="h-32 bg-gradient-to-r from-blue-500 to-purple-600"></div>
           <div className="absolute -bottom-12 left-6">
-            <div className="h-24 w-24 rounded-lg border-4 border-background bg-muted overflow-hidden">
+            <div className="border-background bg-muted h-24 w-24 overflow-hidden rounded-lg border-4">
               <Image
                 src={'/group-placeholder.webp'}
                 alt={group?.name}
@@ -82,26 +82,26 @@ export default function GroupInfoSection({ groupId }: { groupId: string }) {
         <CardContent className="pt-16 pb-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
             <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
+              <div className="mb-2 flex items-center gap-2">
                 <h1 className="text-2xl font-bold">{group?.name}</h1>
                 <Badge variant="secondary">{capitalize(group?.tags[0]?.name) || ''}</Badge>
                 <Badge variant="outline">{group.isPublic ? 'Público' : 'Privado'}</Badge>
               </div>
               <p className="text-muted-foreground mb-4">{group.description}</p>
-              <div className="flex flex-wrap gap-1 mb-4">
+              <div className="mb-4 flex flex-wrap gap-1">
                 {group?.tags?.map((tag, index) => (
                   <Badge key={index} variant="outline" className="text-xs">
                     {capitalize(tag.name)}
                   </Badge>
                 ))}
               </div>
-              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <div className="text-muted-foreground flex items-center gap-4 text-sm">
                 <div className="flex items-center gap-1">
                   <Calendar className="h-4 w-4" />
                   <span>Creado el {new Date(group.createdAt).toLocaleDateString('es-ES')}</span>
                 </div>
                 <button
-                  className="flex items-center gap-1 cursor-pointer hover:underline underline-offset-4"
+                  className="flex cursor-pointer items-center gap-1 underline-offset-4 hover:underline"
                   onClick={handleShowMembers}
                 >
                   <Users className="h-4 w-4" />
@@ -115,12 +115,12 @@ export default function GroupInfoSection({ groupId }: { groupId: string }) {
             <div className="flex items-center gap-2">
               {isMember && (
                 <Button className="cursor-pointer" variant="outline" onClick={handleInviteMembers}>
-                  <UserPlus className="h-4 w-4 mr-2" />
+                  <UserPlus className="mr-2 h-4 w-4" />
                   Invitar
                 </Button>
               )}
               <Button className="cursor-pointer" variant="outline" onClick={handleCopyGroupLink}>
-                <Share2 className="h-4 w-4 mr-2" />
+                <Share2 className="mr-2 h-4 w-4" />
                 Compartir
               </Button>
               {isMember && !isAdmin && (
@@ -130,7 +130,7 @@ export default function GroupInfoSection({ groupId }: { groupId: string }) {
                   onClick={handleLeaveGroup}
                   disabled={isPending}
                 >
-                  <LogOut className="h-4 w-4 mr-2" />
+                  <LogOut className="mr-2 h-4 w-4" />
                   {isPending ? 'Abandonando...' : 'Abandonar'}
                 </Button>
               )}
@@ -143,7 +143,7 @@ export default function GroupInfoSection({ groupId }: { groupId: string }) {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem onClick={() => {}}>
-                      <Settings className="h-4 w-4 mr-2" />
+                      <Settings className="mr-2 h-4 w-4" />
                       Configuración
                     </DropdownMenuItem>
                   </DropdownMenuContent>

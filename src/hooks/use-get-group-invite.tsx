@@ -1,9 +1,9 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import { getGroupInvite } from '@/actions/groups';
 import { useSession } from '@/providers/session-provider';
 import { GroupInvitation, InvitationStatus } from '@prisma/generated/prisma/client';
-import { useQuery } from '@tanstack/react-query';
 
 interface UseGetGroupInviteProps {
   groupId: string;

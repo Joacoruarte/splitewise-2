@@ -3,6 +3,7 @@ import { useDebounce } from 'use-debounce';
 
 import { useEffect, useState } from 'react';
 
+import { useGetGroupCategories } from '../../hooks/useGetGroupCategories';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -14,8 +15,6 @@ import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 
 import { capitalize } from '@/lib/utils';
-
-import { useGetGroupCategories } from '../../hooks/useGetGroupCategories';
 
 interface GroupsControlPanelProps {
   setSearchQuery: (query: string) => void;
@@ -59,7 +58,7 @@ export function GroupsControlPanel({
 
       <div className="flex flex-col gap-4 md:flex-row">
         <div className="relative flex-1">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Search className="text-muted-foreground absolute top-2.5 left-2.5 h-4 w-4" />
           <Input
             placeholder="Buscar grupos..."
             className="pl-8"
@@ -73,7 +72,7 @@ export function GroupsControlPanel({
               variant={selectedCategory !== null ? 'default' : 'outline'}
               className="w-full md:w-auto"
             >
-              <Filter className="h-4 w-4 z-20" />
+              <Filter className="z-20 h-4 w-4" />
               Filtrar
             </Button>
           </DropdownMenuTrigger>

@@ -1,10 +1,9 @@
 'use client';
 
-import { getUserByExternalId } from '@/actions/users';
 import { useUser } from '@clerk/nextjs';
-import { User } from '@prisma/generated/prisma/client';
-
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
+import { getUserByExternalId } from '@/actions/users';
+import { User } from '@prisma/generated/prisma/client';
 
 interface SessionContextType {
   user: User | undefined;

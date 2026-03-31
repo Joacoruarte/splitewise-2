@@ -1,13 +1,13 @@
 'use server';
 
+import { currentUser } from '@clerk/nextjs/server';
+import { getCurrentUser } from './users';
 import { UnauthenticatedError, UnauthorizedError } from '@/models/errors/auth';
 import { NotFoundError } from '@/models/errors/common';
 import { CreateGroupData, GetGroupsProps, GroupWithRelations } from '@/models/group';
-import { currentUser } from '@clerk/nextjs/server';
 import { GroupCategories, InvitationStatus, Prisma } from '@prisma/generated/prisma/client';
 import { getLogger } from '@/lib/logger';
 import { prisma } from '@/lib/prisma';
-import { getCurrentUser } from './users';
 
 export const getGroups = async ({
   categoryId,

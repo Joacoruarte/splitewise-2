@@ -1,9 +1,9 @@
 'use client';
 
-import { leaveGroup } from '@/actions/groups';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { leaveGroup } from '@/actions/groups';
 
 interface UseLeaveGroupProps {
   groupId?: string;

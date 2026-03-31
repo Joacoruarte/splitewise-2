@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 
 import { useState } from 'react';
 
+import { AddPaymentDialog } from '../dialog/add-payment.dialog';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -13,8 +14,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-
-import { AddPaymentDialog } from '../dialog/add-payment.dialog';
 
 const debtors = [
   {
@@ -79,7 +78,7 @@ export function DebtDetailSection() {
                     </Avatar>
                     <div>
                       <p className="text-sm font-medium">{debtor.name}</p>
-                      <p className="text-xs text-muted-foreground">Te debe</p>
+                      <p className="text-muted-foreground text-xs">Te debe</p>
                     </div>
                   </div>
                   <div className="text-right">
@@ -114,7 +113,7 @@ export function DebtDetailSection() {
                     </Avatar>
                     <div>
                       <p className="text-sm font-medium">{creditor.name}</p>
-                      <p className="text-xs text-muted-foreground">Le debes</p>
+                      <p className="text-muted-foreground text-xs">Le debes</p>
                     </div>
                   </div>
                   <div className="text-right">

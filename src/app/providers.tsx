@@ -1,9 +1,9 @@
 'use client';
 
-import { ThemeProvider } from '@/providers/theme-provider';
 import { ClerkProvider } from '@clerk/nextjs';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ThemeProvider } from '@/providers/theme-provider';
 
 import { getQueryClient } from '@/lib/get-query-client';
 import { Theme } from '@/lib/theme';

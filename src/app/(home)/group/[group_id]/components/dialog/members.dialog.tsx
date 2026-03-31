@@ -1,12 +1,12 @@
+import { useParams } from 'next/navigation';
+import useGetGroupById from '../../hooks/use-get-group-by-id';
+import useGetGroupMembers from '../../hooks/use-get-group-members';
 import { useRemoveGroupMember } from '@/app/(home)/group/[group_id]/hooks/use-remove-group-member';
 import { useSession } from '@/providers/session-provider';
-import { useParams } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { DialogTitle } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
-import useGetGroupById from '../../hooks/use-get-group-by-id';
-import useGetGroupMembers from '../../hooks/use-get-group-members';
 
 export function MembersDialog() {
   const { group_id } = useParams();
@@ -21,17 +21,17 @@ export function MembersDialog() {
   return (
     <div className="space-y-6 py-4">
       <DialogTitle>Miembros del grupo</DialogTitle>
-      <div className="flex flex-col gap-2 overflow-y-auto max-h-[500px]">
+      <div className="flex max-h-[500px] flex-col gap-2 overflow-y-auto">
         {isLoading
           ? Array.from({ length: 4 }).map((_, index) => (
-              <div key={index} className="flex items-center justify-center h-full">
+              <div key={index} className="flex h-full items-center justify-center">
                 <Skeleton className="h-10 w-full" />
               </div>
             ))
           : groupMembers?.map(member => (
               <div
                 key={member.id}
-                className="flex items-center justify-between p-2 rounded-lg border bg-muted/50"
+                className="bg-muted/50 flex items-center justify-between rounded-lg border p-2"
               >
                 <div className="flex items-center gap-3">
                   <Avatar className="h-8 w-8">
@@ -46,7 +46,7 @@ export function MembersDialog() {
                   </Avatar>
                   <div>
                     <p className="text-sm font-medium">{member.user.name}</p>
-                    <p className="text-xs text-muted-foreground">{member.user.email}</p>
+                    <p className="text-muted-foreground text-xs">{member.user.email}</p>
                   </div>
                 </div>
                 {isGroupAdmin && member.userId !== user?.id && (

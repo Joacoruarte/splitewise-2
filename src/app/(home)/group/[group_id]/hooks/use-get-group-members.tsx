@@ -1,5 +1,5 @@
-import { getGroupMembers } from '@/actions/groups';
 import { useQuery } from '@tanstack/react-query';
+import { getGroupMembers } from '@/actions/groups';
 
 export default function useGetGroupMembers({ groupId }: { groupId: string }) {
   return useQuery({

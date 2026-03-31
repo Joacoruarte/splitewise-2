@@ -1,13 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { createExpense } from '@/actions/expenses';
-import { CreateExpenseData, createExpenseSchema } from '@/models/expense';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { CreateExpenseData, createExpenseSchema } from '@/models/expense';
+import { createExpense } from '@/actions/expenses';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 

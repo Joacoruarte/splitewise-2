@@ -1,16 +1,16 @@
 'use client';
 
+import { Bell, Loader2 } from 'lucide-react';
+import { Button } from '../ui/button';
+import { GroupInvitationCard } from './group-invitation-card';
 import { useGetNotifications } from '@/hooks/notifications/use-get-notifications';
 import { useGroupInviteActions } from '@/hooks/use-group-invite-actions';
 import { Notification } from '@prisma/generated/prisma/client';
-import { Bell, Loader2 } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Button } from '../ui/button';
-import { GroupInvitationCard } from './group-invitation-card';
 
 export default function UserNotifications() {
   const { data: notifications, isLoading, unreadCount } = useGetNotifications();
