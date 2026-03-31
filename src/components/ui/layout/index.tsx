@@ -1,7 +1,7 @@
 'use client';
 
 import { SessionProvider } from '@/providers/session-provider';
-import { User } from '@prisma/client';
+import { User } from '@prisma/generated/prisma/client';
 import { useState } from 'react';
 import { SIDEBAR_WIDTH, SidebarProvider, useSidebar } from '@/components/ui/sidebar';
 import { Header } from './header';
@@ -53,12 +53,12 @@ export function Layout({ children, user }: { children: React.ReactNode; user: Us
     <div className="flex min-h-screen w-full">
       <div
         style={{ width: !isMobile && state == 'expanded' ? sidebarWidth : 0 }}
-        className="flex-shrink-0 transition-width duration-150"
+        className="transition-width flex-shrink-0 duration-150"
       >
         <Sidebar user={user} sidebarWidth={!isMobile && state == 'expanded' ? sidebarWidth : 0} />
       </div>
       <div
-        className="w-0.5 cursor-col-resize hover:bg-gray-400 transition-colors"
+        className="w-0.5 cursor-col-resize transition-colors hover:bg-gray-400"
         onMouseDown={handleMouseDown}
       />
       <div className="flex-1">

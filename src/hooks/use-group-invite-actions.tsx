@@ -1,7 +1,7 @@
 'use client';
 
 import { updateGroupInvitation } from '@/actions/groups';
-import { InvitationStatus } from '@prisma/client';
+import { InvitationStatus } from '@prisma/generated/prisma/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 

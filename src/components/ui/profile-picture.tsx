@@ -2,7 +2,7 @@
 
 import { useAuth } from '@clerk/clerk-react';
 import { SignOutButton } from '@clerk/nextjs';
-import { User } from '@prisma/client';
+import { User } from '@prisma/generated/prisma/client';
 
 import Link from 'next/link';
 

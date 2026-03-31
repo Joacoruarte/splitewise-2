@@ -1,4 +1,4 @@
-import { Group, GroupCategories, GroupMember, User } from '@prisma/client';
+import { Group, GroupCategories, GroupMember, User } from '@prisma/generated/prisma/client';
 import { z } from 'zod';
 
 export const createGroupSchema = z.object({

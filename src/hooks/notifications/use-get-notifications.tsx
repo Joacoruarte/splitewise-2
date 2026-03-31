@@ -2,7 +2,7 @@
 
 import { getNotifications } from '@/actions/notifications';
 import { useSession } from '@/providers/session-provider';
-import { Notification } from '@prisma/client';
+import { Notification } from '@prisma/generated/prisma/client';
 import { useQuery } from '@tanstack/react-query';
 
 interface UseGetNotificationsProps {

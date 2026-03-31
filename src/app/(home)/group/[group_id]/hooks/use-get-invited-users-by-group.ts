@@ -1,7 +1,7 @@
 'use client';
 
 import { getInvitedUsersByGroup } from '@/actions/groups';
-import { InvitationStatus } from '@prisma/client';
+import { InvitationStatus } from '@prisma/generated/prisma/client';
 import { useQuery } from '@tanstack/react-query';
 
 interface InvitedUser {

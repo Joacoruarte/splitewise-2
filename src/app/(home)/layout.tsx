@@ -1,6 +1,6 @@
 import { getUserByExternalId } from '@/actions/users';
 import { auth } from '@clerk/nextjs/server';
-import { User } from '@prisma/client';
+import { User } from '@prisma/generated/prisma/client';
 
 import type React from 'react';
 

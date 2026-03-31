@@ -2,7 +2,7 @@
 
 import { UnauthenticatedError } from '@/models/errors/auth';
 import { SendGroupInvitationNotificationProps } from '@/models/notifications';
-import { GroupInvitation } from '@prisma/client';
+import { GroupInvitation } from '@prisma/generated/prisma/client';
 import { getLogger } from '@/lib/logger';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from './users';

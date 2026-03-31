@@ -1,7 +1,7 @@
 'use client';
 
 import { deleteUser } from '@/actions/users';
-import { User } from '@prisma/client';
+import { User } from '@prisma/generated/prisma/client';
 import { useMutation } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
@@ -24,20 +24,20 @@ export function UserListItem({ user }: { user: User }) {
   });
 
   return (
-    <div key={user.id} className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-      <div className="flex justify-between items-start">
+    <div key={user.id} className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+      <div className="flex items-start justify-between">
         <div>
           <h3 className="font-medium text-gray-900">{user.name}</h3>
           <p className="text-sm text-gray-500">{user.email}</p>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="mt-1 text-xs text-gray-400">
             Created: {new Date(user.createdAt).toLocaleDateString()}
           </p>
         </div>
         <button
           onClick={() => mutate(user.id)}
           disabled={isDeleting}
-          className={`inline-flex items-center px-3 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 ${
-            isDeleting ? 'opacity-50 cursor-not-allowed' : ''
+          className={`inline-flex items-center rounded-md border border-transparent bg-red-600 px-3 py-1 text-sm font-medium text-white hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none ${
+            isDeleting ? 'cursor-not-allowed opacity-50' : ''
           }`}
         >
           {isDeleting ? 'Deleting...' : 'Delete'}

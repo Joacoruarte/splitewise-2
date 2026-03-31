@@ -2,7 +2,7 @@
 
 import { NotFoundError } from '@/models/errors/common';
 import { currentUser } from '@clerk/nextjs/server';
-import { User } from '@prisma/client';
+import { User } from '@prisma/generated/prisma/client';
 
 import { revalidatePath } from 'next/cache';
 

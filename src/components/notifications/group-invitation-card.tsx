@@ -1,6 +1,6 @@
 'use client';
 
-import { Notification } from '@prisma/client';
+import { Notification } from '@prisma/generated/prisma/client';
 import { Check, Users, X } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -60,13 +60,13 @@ export const GroupInvitationCard = ({
             </Avatar>
           </div>
 
-          <div className="flex-1 min-w-0">
+          <div className="min-w-0 flex-1">
             <div className="flex items-start justify-between gap-2">
               <div className="flex-1">
-                <h4 className="font-medium text-sm leading-tight">{notification.title}</h4>
-                <p className="text-xs text-muted-foreground mt-1">{notification.message}</p>
-                <div className="flex items-center gap-2 mt-2">
-                  <span className="text-xs text-muted-foreground">
+                <h4 className="text-sm leading-tight font-medium">{notification.title}</h4>
+                <p className="text-muted-foreground mt-1 text-xs">{notification.message}</p>
+                <div className="mt-2 flex items-center gap-2">
+                  <span className="text-muted-foreground text-xs">
                     {formatTimeAgo(new Date(notification.createdAt))}
                   </span>
                   {!notification.read && (
@@ -79,14 +79,14 @@ export const GroupInvitationCard = ({
             </div>
 
             {!notification.read && notification.entityId && (
-              <div className="flex gap-2 mt-3">
+              <div className="mt-3 flex gap-2">
                 <Button
                   size="sm"
                   onClick={handleAccept}
                   disabled={isPending}
-                  className="flex-1 h-8 text-xs cursor-pointer"
+                  className="h-8 flex-1 cursor-pointer text-xs"
                 >
-                  <Check className="h-3 w-3 mr-1" />
+                  <Check className="mr-1 h-3 w-3" />
                   Aceptar
                 </Button>
                 <Button
@@ -94,9 +94,9 @@ export const GroupInvitationCard = ({
                   variant="outline"
                   onClick={handleDecline}
                   disabled={isPending}
-                  className="flex-1 h-8 text-xs cursor-pointer"
+                  className="h-8 flex-1 cursor-pointer text-xs"
                 >
-                  <X className="h-3 w-3 mr-1" />
+                  <X className="mr-1 h-3 w-3" />
                   Rechazar
                 </Button>
               </div>

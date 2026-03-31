@@ -1,7 +1,7 @@
 // prisma/seeding/seed-from-remote.ts
-import { Prisma, PrismaClient } from '@prisma/client';
-import dotenv from 'dotenv';
 import path from 'path';
+import { Prisma, PrismaClient } from '@prisma/generated/prisma/client';
+import dotenv from 'dotenv';
 
 // Carga la URL remota
 dotenv.config({ path: path.resolve(__dirname, '../../.env.production') });

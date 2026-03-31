@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { User } from '@prisma/generated/prisma/client';
 import { Clock, CreditCard, Home, PieChart, Settings, Users } from 'lucide-react';
 import Link from 'next/link';
 import { ModeToggle } from '@/components/mode-toggle';
@@ -17,12 +17,12 @@ export function Sidebar({ user, sidebarWidth }: { user: User; sidebarWidth: numb
   return (
     <SidebarComponent
       variant="floating"
-      className="border-r flex-shrink-0 transition-width duration-150 bg-background"
+      className="transition-width bg-background flex-shrink-0 border-r duration-150"
       style={{ width: sidebarWidth }}
     >
       <SidebarHeader className="flex flex-col items-start px-4 py-4">
         <div className="flex items-center">
-          <CreditCard className="h-6 w-6 mr-2 text-primary" />
+          <CreditCard className="text-primary mr-2 h-6 w-6" />
           <h1 className="text-xl font-bold">GastoGrupal</h1>
         </div>
       </SidebarHeader>
@@ -31,7 +31,7 @@ export function Sidebar({ user, sidebarWidth }: { user: User; sidebarWidth: numb
           <SidebarMenuItem>
             <SidebarMenuButton asChild isActive>
               <Link href="/">
-                <Home className="h-4 w-4 mr-2" />
+                <Home className="mr-2 h-4 w-4" />
                 <span>Dashboard</span>
               </Link>
             </SidebarMenuButton>
@@ -39,7 +39,7 @@ export function Sidebar({ user, sidebarWidth }: { user: User; sidebarWidth: numb
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
               <Link href="/categorias">
-                <PieChart className="h-4 w-4 mr-2" />
+                <PieChart className="mr-2 h-4 w-4" />
                 <span>Por Categorías</span>
               </Link>
             </SidebarMenuButton>
@@ -47,7 +47,7 @@ export function Sidebar({ user, sidebarWidth }: { user: User; sidebarWidth: numb
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
               <Link href="/cronologico">
-                <Clock className="h-4 w-4 mr-2" />
+                <Clock className="mr-2 h-4 w-4" />
                 <span>Cronológico</span>
               </Link>
             </SidebarMenuButton>
@@ -55,7 +55,7 @@ export function Sidebar({ user, sidebarWidth }: { user: User; sidebarWidth: numb
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
               <Link href="/amigos">
-                <Users className="h-4 w-4 mr-2" />
+                <Users className="mr-2 h-4 w-4" />
                 <span>Amigos</span>
               </Link>
             </SidebarMenuButton>
@@ -63,7 +63,7 @@ export function Sidebar({ user, sidebarWidth }: { user: User; sidebarWidth: numb
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
               <Link href="/configuracion">
-                <Settings className="h-4 w-4 mr-2" />
+                <Settings className="mr-2 h-4 w-4" />
                 <span>Configuración</span>
               </Link>
             </SidebarMenuButton>
@@ -73,10 +73,10 @@ export function Sidebar({ user, sidebarWidth }: { user: User; sidebarWidth: numb
       <SidebarFooter className="border-t p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <ProfilePicture user={user} className="h-8 w-8 mr-2" align="start" />
+            <ProfilePicture user={user} className="mr-2 h-8 w-8" align="start" />
             <div>
               <p className="text-sm font-medium">{user.name}</p>
-              <p className="text-xs text-muted-foreground text-ellipsis overflow-x-hidden max-w-[150px]">
+              <p className="text-muted-foreground max-w-[150px] overflow-x-hidden text-xs text-ellipsis">
                 {user.email}
               </p>
             </div>
