@@ -6,7 +6,7 @@
     "dev": "next dev",
     "dev:turbo": "next dev --turbopack",
     "dev:with-env": "bun scripts/dev-with-env.ts",
-    "build": "prisma generate && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
