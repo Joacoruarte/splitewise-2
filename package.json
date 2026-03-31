@@ -7,7 +7,6 @@
     "dev:turbo": "next dev --turbopack",
     "dev:with-env": "bun scripts/dev-with-env.ts",
     "build": "prisma generate && next build",
-    "postinstall": "prisma generate",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
